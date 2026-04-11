@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -45,7 +47,7 @@ namespace VarunPortfolioCore.Controllers
         }
 
         [HttpPost]
-        public JsonResult SendMail([FromBody] FormData model)
+        public async Task<JsonResult> SendMail([FromBody] FormData model)
         {
             try
             {
@@ -62,8 +64,15 @@ namespace VarunPortfolioCore.Controllers
                             $"Message: {model.Message}";
 
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential("varunraj.techdev@gmail.com", "advx ksvw btum xzeo");
+
+                smtp.Credentials = new NetworkCredential(
+                    "varunraj.techdev@gmail.com",
+                    "advxksvwbtumxzeo"
+                );
+
                 smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
 
                 smtp.Send(mail);
 
