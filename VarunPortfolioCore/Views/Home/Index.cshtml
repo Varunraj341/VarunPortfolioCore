@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Varuntech</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
+    <script src="https://cdn.jsdelivr.net/npm/@@emailjs/browser@4/dist/email.min.js"></script>
+<style>
 /* ═══════════════════════════════════ TOKENS */
 :root{
   --bg:#07070e;--surface:#0d0d1a;--card:#111122;--border:#1e1e35;
@@ -683,7 +684,7 @@ footer{
                     <label>Project Details *</label>
                     <textarea id="f-msg" placeholder="Describe your project requirements..."></textarea>
                 </div>
-                <button class="submit-btn" onclick="submitForm()">Send Message →</button>
+                <button class="submit-btn" onclick="sendMail1()">Send Message →</button>
             </div>
             <div class="success-msg" id="successMsg">
                 <div class="check">✅</div>
@@ -882,7 +883,32 @@ footer{
         }
     });
 }
+   function sendMail1() {
+
+       $("#loader").hide();
+       $(".submit-btn").prop("disabled", false).text("Send Message →");
+    var params = {
+        name: document.getElementById("f-name").value,
+        phone: document.getElementById("f-phone").value,
+        email: document.getElementById("f-email").value,
+        type: document.getElementById("f-type").value,
+        message: document.getElementById("f-msg").value
+    };
+    emailjs.send("service_p5pgw35", "template_cwvc5le", params)
+    .then(function (response) {
+          $("#popupForm").hide();
+                $("#successMsg").show();
+    })
+    .catch(function (error) {
+         alert("Mail send failed ❌");
+    });
+}
     </script>
+    <script>
+(function () {
+    emailjs.init("9XbFpk8_qPb7xLJAE");
+})();
+</script>
 </body>
 </html>
 
