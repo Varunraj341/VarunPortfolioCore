@@ -1,0 +1,1330 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>ÉCLAT — Luxury Dress Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --rose:#f5ebe0;
+  --blush:#e8d5c4;
+  --mauve:#c9a98e;
+  --deep:#7c5c4a;
+  --wine:#3d1f1f;
+  --ink:#1a0f0f;
+  --white:#fefcfa;
+  --gold:#c4a35a;
+  --gold2:#e8c97a;
+  --mid:#8a7060;
+  --light:#ede5dc;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--rose);
+  color:var(--ink);
+  font-family:'Montserrat',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+a{text-decoration:none;color:inherit;}
+
+/* ── CURSOR ── */
+#cur{position:fixed;z-index:9999;pointer-events:none;mix-blend-mode:multiply;transition:transform .12s ease;}
+#cur-inner{width:12px;height:12px;background:var(--wine);border-radius:50%;transform:translate(-50%,-50%);}
+#cur-outer{
+  position:fixed;z-index:9998;pointer-events:none;
+  width:44px;height:44px;border:1.5px solid rgba(124,92,74,.4);border-radius:50%;
+  transform:translate(-50%,-50%);transition:all .18s ease;
+}
+@@media(hover:none){#cur,#cur-outer{display:none;}body{cursor:auto;}}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--rose);}
+::-webkit-scrollbar-thumb{background:var(--mauve);}
+
+/* ══════ PRELOADER ══════ */
+#preloader{
+  position:fixed;inset:0;z-index:9000;
+  background:var(--wine);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .8s ease, visibility .8s ease;
+}
+#preloader.hide{opacity:0;visibility:hidden;}
+.pre-logo{
+  font-family:'Libre Baskerville',serif;
+  font-size:3rem;font-style:italic;color:var(--rose);
+  letter-spacing:.1em;
+  animation:preIn 1s ease .3s both;
+}
+.pre-bar{
+  position:absolute;bottom:0;left:0;height:3px;
+  background:var(--mauve);width:0;
+  animation:preBar 1.8s cubic-bezier(.4,0,.2,1) .2s forwards;
+}
+@@keyframes preIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@@keyframes preBar{to{width:100%;}}
+
+/* ══════ NAV ══════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem 3rem;
+  transition:all .5s ease;
+}
+nav.scrolled{
+  background:rgba(245,235,224,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--blush);
+  padding:1rem 3rem;
+}
+.nav-logo{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.5rem;font-style:italic;
+  color:var(--wine);letter-spacing:.08em;
+}
+.nav-links{display:flex;gap:2.2rem;list-style:none;}
+.nav-links a{
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--mid);font-weight:500;
+  position:relative;padding-bottom:3px;transition:color .3s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:var(--wine);transition:width .4s ease;
+}
+.nav-links a:hover{color:var(--wine);}
+.nav-links a:hover::after{width:100%;}
+.nav-right{display:flex;align-items:center;gap:1.4rem;}
+.nav-icon{
+  font-size:.95rem;cursor:none;color:var(--mid);
+  transition:color .3s;position:relative;
+}
+.nav-icon:hover{color:var(--wine);}
+.cart-badge{
+  position:absolute;top:-6px;right:-6px;
+  width:14px;height:14px;background:var(--wine);color:var(--rose);
+  border-radius:50%;font-size:.55rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--wine);border-radius:2px;transition:all .35s ease;}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px);}
+.mob-menu{
+  display:none;position:fixed;inset:0;z-index:490;
+  background:var(--wine);
+  flex-direction:column;align-items:center;justify-content:center;gap:3rem;
+}
+.mob-menu.open{display:flex;}
+.mob-menu a{
+  font-family:'Libre Baskerville',serif;font-size:2.8rem;font-style:italic;
+  color:var(--rose);letter-spacing:.04em;
+  opacity:0;transform:translateY(20px);
+  transition:color .3s;
+}
+.mob-menu.open a{animation:mobLinkIn .5s ease forwards;}
+.mob-menu.open a:nth-child(1){animation-delay:.1s;}
+.mob-menu.open a:nth-child(2){animation-delay:.18s;}
+.mob-menu.open a:nth-child(3){animation-delay:.26s;}
+.mob-menu.open a:nth-child(4){animation-delay:.34s;}
+.mob-menu.open a:nth-child(5){animation-delay:.42s;}
+.mob-menu a:hover{color:var(--mauve);}
+@@keyframes mobLinkIn{to{opacity:1;transform:none;}}
+
+/* ══════ HERO ══════ */
+#hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  overflow:hidden;position:relative;
+}
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:9rem 4rem 5rem;
+  position:relative;z-index:1;
+  background:var(--rose);
+}
+.hero-right{
+  position:relative;overflow:hidden;
+  background:var(--wine);
+}
+/* Dress illustration / image area */
+.hero-img-area{
+  width:100%;height:100%;
+  position:relative;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-dress-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,#3d1f1f 0%,#5a2e2e 40%,#7c4040 100%);
+}
+.hero-dress-img{
+  width:70%;max-width:320px;
+  aspect-ratio:2/3;
+  object-fit:cover;border-radius:4px;
+  position:relative;z-index:1;
+  box-shadow:0 60px 100px rgba(0,0,0,.4);
+  animation:dressFloat 6s ease-in-out infinite;
+  overflow:hidden;
+  background:linear-gradient(160deg,#8b5a5a,#5a3030);
+  display:flex;align-items:center;justify-content:center;
+}
+@@keyframes dressFloat{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-18px) scale(1.01);}
+}
+/* 3D Dress Mannequin CSS */
+.dress-3d{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;}
+.dress-svg-wrap{
+  position:relative;z-index:2;
+  animation:dressFloat 6s ease-in-out infinite;
+}
+.hero-tag-left{
+  position:absolute;left:2rem;top:50%;transform:translateY(-50%);
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(245,235,224,.35);font-weight:300;
+}
+.hero-year-right{
+  position:absolute;right:2rem;bottom:3rem;
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:5rem;font-weight:400;color:rgba(255,255,255,.04);
+  line-height:1;
+}
+/* Floating product chips on hero right */
+.h-chip{
+  position:absolute;z-index:3;
+  background:rgba(245,235,224,.12);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(245,235,224,.15);
+  color:var(--rose);border-radius:30px;
+  padding:.45rem 1rem;font-size:.62rem;font-weight:500;letter-spacing:.1em;
+  white-space:nowrap;
+}
+.hc1{top:20%;left:5%;animation:fcFloat 5s ease-in-out infinite;}
+.hc2{top:28%;right:4%;animation:fcFloat 6.5s ease-in-out infinite .8s;}
+.hc3{bottom:22%;left:8%;animation:fcFloat 5.5s ease-in-out infinite 1.2s;}
+@@keyframes fcFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* Hero left content */
+.h-season{
+  font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--mauve);font-weight:500;
+  display:flex;align-items:center;gap:.7rem;margin-bottom:1.8rem;
+  opacity:0;animation:fadeUp .8s ease .3s forwards;
+}
+.h-season::before{content:'';width:28px;height:1px;background:var(--mauve);}
+h1.h-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(3rem,6vw,5.5rem);
+  font-weight:400;line-height:1.02;color:var(--wine);
+  margin-bottom:1.4rem;
+  opacity:0;animation:fadeUp .9s ease .45s forwards;
+}
+h1.h-title em{font-style:italic;color:var(--deep);}
+h1.h-title .h-outline{
+  -webkit-text-stroke:1.5px var(--wine);
+  color:transparent;
+  display:block;
+}
+.h-sub{
+  font-size:.85rem;color:var(--mid);line-height:1.9;max-width:360px;
+  margin-bottom:3rem;
+  opacity:0;animation:fadeUp .9s ease .6s forwards;
+}
+.h-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .9s ease .75s forwards;
+}
+.btn-wine{
+  background:var(--wine);color:var(--rose);
+  padding:.9rem 2.2rem;border-radius:2px;
+  font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  transition:all .35s ease;border:none;cursor:none;
+  display:inline-flex;align-items:center;gap:.5rem;
+}
+.btn-wine:hover{background:var(--deep);transform:translateY(-3px);box-shadow:0 16px 40px rgba(61,31,31,.3);}
+.btn-ghost{
+  background:transparent;color:var(--wine);
+  border:1.5px solid var(--mauve);
+  padding:.9rem 2.2rem;border-radius:2px;
+  font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  transition:all .35s ease;cursor:none;
+}
+.btn-ghost:hover{background:var(--wine);color:var(--rose);border-color:var(--wine);transform:translateY(-3px);}
+.h-stats{
+  display:flex;gap:2rem;margin-top:3.5rem;padding-top:2.5rem;
+  border-top:1px solid var(--blush);
+  opacity:0;animation:fadeUp .9s ease .9s forwards;
+}
+.hs-num{font-family:'Libre Baskerville',serif;font-size:1.8rem;font-weight:700;color:var(--wine);line-height:1;}
+.hs-lbl{font-size:.6rem;color:var(--mid);text-transform:uppercase;letter-spacing:.12em;margin-top:.2rem;}
+.h-scroll-hint{
+  position:absolute;bottom:2.5rem;left:4rem;
+  display:flex;align-items:center;gap:.7rem;
+  opacity:0;animation:fadeUp .8s ease 1.2s forwards;
+}
+.scroll-track{width:36px;height:1px;background:var(--blush);position:relative;overflow:hidden;}
+.scroll-track::after{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:1px;background:var(--mauve);
+  animation:slide 2s ease-in-out infinite;
+}
+@@keyframes slide{0%{left:-100%;}100%{left:100%;}}
+.scroll-lbl{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);}
+@@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+
+/* ══════ MARQUEE ══════ */
+.marq-wrap{
+  background:var(--wine);padding:.85rem 0;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.marq-track{display:flex;width:max-content;animation:mq 24s linear infinite;}
+.marq-item{
+  display:flex;align-items:center;gap:1rem;padding:0 2rem;
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(245,235,224,.4);font-weight:400;white-space:nowrap;
+}
+.marq-star{color:var(--mauve);font-size:.5rem;}
+@@keyframes mq{to{transform:translateX(-50%);}}
+
+/* ══════ SECTIONS ══════ */
+section{padding:7rem 3rem;}
+.s-inner{max-width:1260px;margin:0 auto;}
+.eyebrow{
+  font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--mauve);font-weight:600;margin-bottom:.9rem;
+  display:flex;align-items:center;gap:.7rem;
+}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--mauve);}
+.sec-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(2rem,4vw,3.2rem);font-weight:400;
+  color:var(--wine);line-height:1.1;
+}
+.sec-title em{font-style:italic;}
+
+/* ══════ CATEGORIES ══════ */
+#categories{background:var(--white);padding-top:6rem;padding-bottom:6rem;}
+.cat-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
+  margin-top:3rem;
+}
+@@media(max-width:900px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+@@media(max-width:480px){.cat-grid{grid-template-columns:1fr 1fr;gap:.6rem;}}
+.cat-card{
+  position:relative;border-radius:3px;overflow:hidden;cursor:none;
+  aspect-ratio:3/4;
+  transition:all .4s ease;
+}
+.cat-card:hover{transform:translateY(-6px);box-shadow:0 32px 70px rgba(61,31,31,.18);}
+.cat-bg{
+  position:absolute;inset:0;
+  transition:transform .6s ease;
+}
+.cat-card:hover .cat-bg{transform:scale(1.06);}
+.cat-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem 1.2rem 1.2rem;
+  background:linear-gradient(to top,rgba(30,10,10,.75) 0%,transparent 100%);
+}
+.cat-name{
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:1.1rem;color:var(--rose);display:block;margin-bottom:.2rem;
+}
+.cat-count{font-size:.62rem;color:rgba(245,235,224,.55);letter-spacing:.1em;text-transform:uppercase;}
+
+/* ══════ FEATURED / COLLECTION ══════ */
+#collection{background:var(--rose);}
+.collection-intro{
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;
+  margin-bottom:3rem;
+}
+.view-all{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--deep);font-weight:600;border-bottom:1px solid var(--mauve);
+  padding-bottom:2px;transition:all .3s;cursor:none;
+}
+.view-all:hover{color:var(--wine);}
+.prod-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+}
+@@media(max-width:860px){.prod-grid{grid-template-columns:repeat(2,1fr);}}
+@@media(max-width:480px){.prod-grid{grid-template-columns:1fr 1fr;gap:.8rem;}}
+.prod-card{cursor:none;position:relative;}
+.prod-img-wrap{
+  position:relative;overflow:hidden;border-radius:3px;
+  aspect-ratio:3/4;background:var(--blush);
+  margin-bottom:1rem;
+}
+.prod-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s ease;
+  display:block;
+}
+.prod-card:hover .prod-img-wrap img{transform:scale(1.06);}
+/* Quick actions on hover */
+.prod-actions{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;
+  transform:translateY(100%);transition:transform .4s ease;
+}
+.prod-card:hover .prod-actions{transform:translateY(0);}
+.prod-btn{
+  flex:1;background:var(--wine);color:var(--rose);
+  padding:.75rem;border:none;cursor:none;
+  font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  transition:background .3s;
+}
+.prod-btn:hover{background:var(--deep);}
+.prod-btn-wish{flex:0 0 46px;background:rgba(245,235,224,.12);border-left:1px solid rgba(255,255,255,.1);}
+.prod-badge{
+  position:absolute;top:.8rem;left:.8rem;
+  background:var(--wine);color:var(--rose);
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:2px;
+}
+.prod-badge.new{background:var(--gold);color:var(--wine);}
+.prod-badge.sale{background:#c0392b;}
+.prod-info{}
+.prod-name{
+  font-family:'Libre Baskerville',serif;font-size:.95rem;
+  color:var(--wine);margin-bottom:.25rem;
+}
+.prod-sub{font-size:.7rem;color:var(--mid);margin-bottom:.4rem;}
+.prod-price{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.9rem;font-weight:600;color:var(--wine);
+}
+.prod-price-old{font-size:.78rem;color:var(--mid);text-decoration:line-through;font-weight:400;}
+.prod-stars{color:var(--gold);font-size:.65rem;letter-spacing:1px;margin-top:.2rem;}
+
+/* ══════ BANNER STRIP ══════ */
+#banner{
+  background:var(--wine);
+  padding:6rem 3rem;position:relative;overflow:hidden;
+}
+#banner::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 20% 50%,rgba(196,163,90,.06),transparent),
+    radial-gradient(ellipse 50% 70% at 80% 50%,rgba(196,163,90,.04),transparent);
+}
+.banner-inner{
+  max-width:1260px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+}
+@@media(max-width:760px){.banner-inner{grid-template-columns:1fr;gap:2.5rem;text-align:center;}}
+.banner-text h2{
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(2rem,4vw,3.5rem);
+  color:var(--rose);font-weight:400;line-height:1.1;
+  margin-bottom:1.2rem;
+}
+.banner-text h2 em{font-style:italic;color:var(--mauve);}
+.banner-text p{font-size:.85rem;color:rgba(245,235,224,.5);line-height:1.85;max-width:400px;}
+@@media(max-width:760px){.banner-text p{margin:0 auto;}}
+.banner-right{display:flex;flex-direction:column;gap:1.2rem;}
+.banner-stat{
+  display:flex;align-items:center;gap:1.2rem;
+  background:rgba(245,235,224,.04);border:1px solid rgba(245,235,224,.08);
+  border-radius:4px;padding:1.1rem 1.4rem;
+  transition:all .35s;
+}
+.banner-stat:hover{background:rgba(245,235,224,.07);transform:translateX(6px);}
+.bs-num{
+  font-family:'Libre Baskerville',serif;font-size:1.8rem;
+  color:var(--mauve);font-weight:700;min-width:70px;
+}
+.bs-lbl{font-size:.75rem;color:rgba(245,235,224,.5);line-height:1.5;}
+
+/* ══════ NEW ARRIVALS / SCROLL STRIP ══════ */
+#arrivals{background:var(--light);padding:6rem 0;}
+.arrivals-head{padding:0 3rem 2.5rem;max-width:1260px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;}
+.arrivals-scroll{
+  display:flex;gap:1.2rem;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding:0 3rem 1.5rem;
+  scrollbar-width:none;
+}
+.arrivals-scroll::-webkit-scrollbar{display:none;}
+.arr-card{
+  flex:0 0 260px;scroll-snap-align:start;
+  background:var(--white);border-radius:4px;overflow:hidden;cursor:none;
+  transition:all .4s ease;
+}
+.arr-card:hover{transform:translateY(-5px);box-shadow:0 24px 50px rgba(61,31,31,.12);}
+.arr-img{
+  width:100%;aspect-ratio:3/4;overflow:hidden;
+  background:var(--blush);position:relative;
+}
+.arr-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block;}
+.arr-card:hover .arr-img img{transform:scale(1.05);}
+.arr-info{padding:1rem 1.1rem;}
+.arr-name{font-family:'Libre Baskerville',serif;font-size:.9rem;color:var(--wine);margin-bottom:.2rem;}
+.arr-price{font-size:.82rem;font-weight:600;color:var(--deep);}
+
+/* ══════ TESTIMONIALS ══════ */
+#reviews{background:var(--white);}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:3rem;}
+@@media(max-width:860px){.review-grid{grid-template-columns:1fr;}}
+.review-card{
+  background:var(--rose);border:1px solid var(--blush);
+  border-radius:3px;padding:2rem;
+  transition:all .4s ease;
+}
+.review-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(61,31,31,.08);}
+.rv-stars{color:var(--gold);font-size:.8rem;letter-spacing:2px;margin-bottom:1rem;}
+.rv-quote{
+  font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:1rem;color:var(--wine);line-height:1.75;margin-bottom:1.3rem;
+}
+.rv-author{display:flex;align-items:center;gap:.8rem;}
+.rv-av{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mauve),var(--deep));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;color:var(--rose);flex-shrink:0;
+}
+.rv-name{font-weight:600;font-size:.82rem;color:var(--wine);}
+.rv-city{font-size:.68rem;color:var(--mid);}
+
+/* ══════ NEWSLETTER ══════ */
+#newsletter{
+  background:linear-gradient(135deg,var(--wine) 0%,var(--deep) 100%);
+  padding:6rem 3rem;text-align:center;position:relative;overflow:hidden;
+}
+#newsletter::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(245,235,224,0.04)'/%3E%3C/svg%3E") repeat;
+}
+.nl-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;}
+.nl-eyebrow{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--mauve);margin-bottom:1rem;}
+.nl-title{
+  font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,4vw,3rem);
+  color:var(--rose);font-weight:400;margin-bottom:.9rem;line-height:1.15;
+}
+.nl-title em{font-style:italic;color:var(--mauve);}
+.nl-sub{font-size:.82rem;color:rgba(245,235,224,.5);margin-bottom:2rem;line-height:1.75;}
+.nl-form{display:flex;gap:0;max-width:440px;margin:0 auto;border-radius:2px;overflow:hidden;border:1px solid rgba(245,235,224,.15);}
+.nl-input{
+  flex:1;background:rgba(245,235,224,.06);border:none;
+  color:var(--rose);padding:.9rem 1.2rem;font-size:.78rem;
+  font-family:'Montserrat',sans-serif;outline:none;
+}
+.nl-input::placeholder{color:rgba(245,235,224,.3);}
+.nl-btn{
+  background:var(--mauve);color:var(--wine);border:none;
+  padding:.9rem 1.5rem;font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;cursor:none;transition:background .3s;
+  font-family:'Montserrat',sans-serif;white-space:nowrap;
+}
+.nl-btn:hover{background:var(--blush);}
+
+/* ══════ CONTACT / INFO BAR ══════ */
+#info{background:var(--rose);padding:5rem 3rem;}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:1260px;margin:0 auto;}
+@@media(max-width:860px){.info-grid{grid-template-columns:repeat(2,1fr);}}
+@@media(max-width:480px){.info-grid{grid-template-columns:1fr;}}
+.info-item{text-align:center;}
+.info-icon{font-size:1.6rem;margin-bottom:.8rem;opacity:.6;}
+.info-title{font-size:.78rem;font-weight:700;color:var(--wine);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;}
+.info-text{font-size:.75rem;color:var(--mid);line-height:1.65;}
+
+/* ══════ FOOTER ══════ */
+footer{background:var(--ink);color:rgba(245,235,224,.4);padding:5rem 3rem 2.5rem;}
+.ft-inner{max-width:1260px;margin:0 auto;}
+.ft-top{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:3rem;
+  padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.06);
+  margin-bottom:2.5rem;
+}
+@@media(max-width:860px){.ft-top{grid-template-columns:1fr 1fr;gap:2rem;}}
+@@media(max-width:480px){.ft-top{grid-template-columns:1fr;}}
+.ft-brand{}
+.ft-logo{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1.6rem;color:var(--rose);margin-bottom:.9rem;}
+.ft-tagline{font-size:.75rem;line-height:1.75;color:rgba(245,235,224,.35);max-width:240px;}
+.ft-col-title{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mauve);font-weight:600;margin-bottom:1.2rem;}
+.ft-links{display:flex;flex-direction:column;gap:.7rem;list-style:none;}
+.ft-links a{font-size:.78rem;color:rgba(245,235,224,.35);transition:color .3s;}
+.ft-links a:hover{color:var(--rose);}
+.ft-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.ft-copy{font-size:.68rem;color:rgba(245,235,224,.25);}
+.ft-social{display:flex;gap:.7rem;}
+.soc-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(245,235,224,.05);border:1px solid rgba(245,235,224,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:rgba(245,235,224,.3);transition:all .3s;cursor:none;
+}
+.soc-btn:hover{background:var(--mauve);border-color:var(--mauve);color:var(--wine);}
+
+/* ══════ CART DRAWER ══════ */
+.cart-overlay{
+  display:none;position:fixed;inset:0;z-index:800;
+  background:rgba(26,15,15,.5);backdrop-filter:blur(4px);
+}
+.cart-overlay.open{display:block;}
+.cart-drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:801;
+  width:min(420px,100vw);
+  background:var(--white);
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
+.cart-overlay.open .cart-drawer{transform:translateX(0);}
+.cart-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 1.8rem;border-bottom:1px solid var(--blush);
+}
+.cart-head h3{font-family:'Libre Baskerville',serif;font-size:1.1rem;color:var(--wine);}
+.cart-close{background:none;border:none;cursor:none;font-size:1.2rem;color:var(--mid);transition:color .3s;}
+.cart-close:hover{color:var(--wine);}
+.cart-items{flex:1;overflow-y:auto;padding:1.5rem;}
+.cart-item{
+  display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--light);
+}
+.ci-img{
+  width:70px;height:90px;border-radius:3px;object-fit:cover;
+  background:var(--blush);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;
+}
+.ci-info{flex:1;}
+.ci-name{font-size:.82rem;font-weight:600;color:var(--wine);margin-bottom:.2rem;}
+.ci-size{font-size:.68rem;color:var(--mid);}
+.ci-price{font-size:.85rem;font-weight:600;color:var(--deep);margin-top:.3rem;}
+.ci-rm{background:none;border:none;cursor:none;color:var(--mid);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.4rem;transition:color .3s;}
+.ci-rm:hover{color:var(--wine);}
+.cart-foot{
+  padding:1.5rem 1.8rem;border-top:1px solid var(--blush);
+}
+.cart-total{display:flex;justify-content:space-between;margin-bottom:1.2rem;font-size:.85rem;}
+.cart-total span:last-child{font-weight:700;color:var(--wine);}
+.cart-checkout{
+  width:100%;background:var(--wine);color:var(--rose);
+  padding:.95rem;border:none;border-radius:2px;cursor:none;
+  font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  transition:background .3s;font-family:'Montserrat',sans-serif;
+}
+.cart-checkout:hover{background:var(--deep);}
+
+/* ══════ REVEAL ══════ */
+[data-r]{opacity:0;transition:opacity .8s ease,transform .8s ease;}
+[data-r="up"]{transform:translateY(36px);}
+[data-r="left"]{transform:translateX(-36px);}
+[data-r="right"]{transform:translateX(36px);}
+[data-r="scale"]{transform:scale(.94);}
+[data-r].on{opacity:1;transform:none;}
+
+/* ══════ MOBILE ══════ */
+@@media(max-width:768px){
+  nav{padding:1rem 1.4rem;}
+  nav.scrolled{padding:.8rem 1.4rem;}
+  .nav-links{display:none;}
+  .nav-right .nav-icon:not(.cart-ic){display:none;}
+  .hamburger{display:flex;}
+  section{padding:4.5rem 1.4rem;}
+
+  #hero{grid-template-columns:1fr;min-height:100vh;}
+  .hero-left{padding:6rem 1.4rem 2.5rem;order:2;}
+  .hero-right{order:1;min-height:55vw;max-height:320px;}
+  .h-scroll-hint{display:none;}
+  .hero-dress-bg{background:linear-gradient(160deg,#5a2e2e,#3d1f1f);}
+
+  .banner-inner{grid-template-columns:1fr;}
+  .banner-text p{margin:0 auto;}
+
+  .arrivals-scroll{padding:0 1.4rem 1.2rem;}
+  .arrivals-head{padding:0 1.4rem 2rem;}
+  .arr-card{flex:0 0 200px;}
+
+  #newsletter{padding:4.5rem 1.4rem;}
+  .nl-form{flex-direction:column;border-radius:2px;}
+  .nl-btn{border-radius:0;}
+
+  footer{padding:4rem 1.4rem 2rem;}
+  .ft-bottom{flex-direction:column;align-items:flex-start;}
+
+  .h-stats{gap:1.2rem;}
+  .hs-num{font-size:1.4rem;}
+}
+@@media(max-width:420px){
+  .h-btns{flex-direction:column;}
+  .btn-wine,.btn-ghost{text-align:center;justify-content:center;}
+  .prod-grid{grid-template-columns:1fr 1fr;gap:.6rem;}
+}
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="pre-logo">Éclat</div>
+        <div class="pre-bar"></div>
+    </div>
+
+    <!-- CURSOR -->
+    <div id="cur"><div id="cur-inner"></div></div>
+    <div id="cur-outer"></div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()">
+        <div class="cart-drawer" onclick="event.stopPropagation()">
+            <div class="cart-head">
+                <h3>Your Bag (3)</h3>
+                <button class="cart-close" onclick="toggleCart()">✕</button>
+            </div>
+            <div class="cart-items">
+                <div class="cart-item">
+                    <div class="ci-img">👗</div>
+                    <div class="ci-info">
+                        <div class="ci-name">Velvet Wrap Dress</div>
+                        <div class="ci-size">Size: M · Burgundy</div>
+                        <div class="ci-price">₹4,299</div>
+                        <button class="ci-rm">Remove</button>
+                    </div>
+                </div>
+                <div class="cart-item">
+                    <div class="ci-img">👘</div>
+                    <div class="ci-info">
+                        <div class="ci-name">Silk Midi Dress</div>
+                        <div class="ci-size">Size: S · Ivory</div>
+                        <div class="ci-price">₹5,899</div>
+                        <button class="ci-rm">Remove</button>
+                    </div>
+                </div>
+                <div class="cart-item">
+                    <div class="ci-img">🎀</div>
+                    <div class="ci-info">
+                        <div class="ci-name">Floral Sundress</div>
+                        <div class="ci-size">Size: L · Pink</div>
+                        <div class="ci-price">₹2,799</div>
+                        <button class="ci-rm">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-foot">
+                <div class="cart-total"><span>Total</span><span>₹12,997</span></div>
+                <button class="cart-checkout">Proceed to Checkout →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="nav-logo">Éclat</div>
+        <ul class="nav-links">
+            <li><a href="#categories">Collections</a></li>
+            <li><a href="#collection">New In</a></li>
+            <li><a href="#arrivals">Arrivals</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#info">Store</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="nav-icon" style="font-size:1rem;">🔍</div>
+            <div class="nav-icon cart-ic" onclick="toggleCart()" style="position:relative;font-size:1rem;">
+                🛍️<span class="cart-badge">3</span>
+            </div>
+        </div>
+        <button class="hamburger" id="hamBtn" onclick="toggleMob()"><span></span><span></span><span></span></button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mob-menu" id="mobMenu">
+        <a href="#categories" onclick="closeMob()">Collections</a>
+        <a href="#collection" onclick="closeMob()">New In</a>
+        <a href="#arrivals" onclick="closeMob()">Arrivals</a>
+        <a href="#reviews" onclick="closeMob()">Reviews</a>
+        <a href="#info" onclick="closeMob()">Store</a>
+    </div>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-left">
+            <div class="h-season">New Collection — 2025</div>
+            <h1 class="h-title">
+                Dressed<br />
+                <em>for Every</em><br />
+                <span class="h-outline">Moment.</span>
+            </h1>
+            <p class="h-sub">Discover handcrafted dresses that celebrate you — from casual elegance to grand occasions. Timeless silhouettes, luxurious fabrics.</p>
+            <div class="h-btns">
+                <a href="#collection" class="btn-wine">Shop Collection →</a>
+                <a href="#categories" class="btn-ghost">Browse All</a>
+            </div>
+            <div class="h-stats">
+                <div><div class="hs-num" data-count="500">0+</div><div class="hs-lbl">Styles</div></div>
+                <div style="width:1px;background:var(--blush);align-self:stretch;"></div>
+                <div><div class="hs-num" data-count="12000">0+</div><div class="hs-lbl">Happy Customers</div></div>
+                <div style="width:1px;background:var(--blush);align-self:stretch;"></div>
+                <div><div class="hs-num" data-count="8">0</div><div class="hs-lbl">Years</div></div>
+            </div>
+            <div class="h-scroll-hint">
+                <div class="scroll-track"></div>
+                <span class="scroll-lbl">Scroll to explore</span>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <!-- 3D Dress scene -->
+            <div class="hero-img-area">
+                <div class="hero-dress-bg"></div>
+                <div class="hero-year-right">2025</div>
+                <div class="hero-tag-left">New Season — Éclat Studio</div>
+
+                <!-- CSS 3D Dress Illustration -->
+                <div class="dress-svg-wrap">
+                    <svg width="280" height="400" viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 40px 80px rgba(0,0,0,0.5));">
+                        <!-- Dress body -->
+                        <defs>
+                            <linearGradient id="dg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#c9a98e" />
+                                <stop offset="50%" stop-color="#e8c99e" />
+                                <stop offset="100%" stop-color="#a07850" />
+                            </linearGradient>
+                            <linearGradient id="dg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#8a6040" />
+                                <stop offset="100%" stop-color="#5a3820" />
+                            </linearGradient>
+                            <linearGradient id="dg3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="rgba(255,255,255,0.12)" />
+                                <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                            </linearGradient>
+                            <linearGradient id="skirt" x1="10%" y1="0%" x2="90%" y2="100%">
+                                <stop offset="0%" stop-color="#e8c99e" />
+                                <stop offset="30%" stop-color="#d4aa80" />
+                                <stop offset="70%" stop-color="#b88858" />
+                                <stop offset="100%" stop-color="#8a6040" />
+                            </linearGradient>
+                            <filter id="softglow">
+                                <feGaussianBlur stdDeviation="3" result="blur" />
+                                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- Dress shadow -->
+                        <ellipse cx="140" cy="395" rx="70" ry="8" fill="rgba(0,0,0,0.25)" />
+
+                        <!-- Skirt — flowing A-line -->
+                        <path d="M85 160 C60 200 30 280 20 380 L260 380 C250 280 220 200 195 160 Z" fill="url(#skirt)" />
+                        <!-- Skirt highlight fold left -->
+                        <path d="M85 160 C70 210 55 280 50 340 C60 300 75 230 90 180 Z" fill="rgba(255,255,255,0.06)" />
+                        <!-- Skirt highlight fold right -->
+                        <path d="M195 160 C210 210 225 280 230 340 C220 300 205 230 190 180 Z" fill="rgba(0,0,0,0.05)" />
+                        <!-- Skirt center fold -->
+                        <path d="M140 165 C135 210 132 280 130 380 L150 380 C148 280 145 210 140 165 Z" fill="rgba(0,0,0,0.04)" />
+                        <!-- Skirt wavy hem -->
+                        <path d="M20 380 C50 370 80 385 110 375 C130 368 150 382 170 375 C190 368 215 380 240 375 L260 380 Z" fill="url(#dg2)" opacity=".5" />
+
+                        <!-- Bodice -->
+                        <path d="M95 80 C88 100 82 130 85 160 L195 160 C198 130 192 100 185 80 C170 70 155 65 140 65 C125 65 110 70 95 80 Z" fill="url(#dg1)" />
+                        <!-- Bodice highlight -->
+                        <path d="M95 80 C88 100 84 130 85 155 C90 140 95 115 100 90 Z" fill="rgba(255,255,255,0.08)" />
+                        <!-- Neckline V -->
+                        <path d="M115 65 L140 105 L165 65" stroke="rgba(255,255,255,0.15)" stroke-width="1" fill="none" />
+                        <!-- Waist detail line -->
+                        <line x1="87" y1="148" x2="193" y2="148" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                        <!-- Belt/sash -->
+                        <rect x="83" y="150" width="114" height="14" rx="2" fill="url(#dg2)" opacity=".8" />
+                        <rect x="83" y="150" width="114" height="14" rx="2" fill="url(#dg3)" />
+
+                        <!-- Straps -->
+                        <path d="M115 65 C108 50 105 38 108 28" stroke="url(#dg1)" stroke-width="8" stroke-linecap="round" fill="none" />
+                        <path d="M165 65 C172 50 175 38 172 28" stroke="url(#dg1)" stroke-width="8" stroke-linecap="round" fill="none" />
+                        <!-- Strap highlights -->
+                        <path d="M113 62 C107 48 105 36 108 26" stroke="rgba(255,255,255,0.15)" stroke-width="3" stroke-linecap="round" fill="none" />
+                        <path d="M167 62 C173 48 175 36 172 26" stroke="rgba(255,255,255,0.15)" stroke-width="3" stroke-linecap="round" fill="none" />
+
+                        <!-- Fabric shine -->
+                        <path d="M100 90 C115 85 130 88 140 95 C130 100 115 98 100 90 Z" fill="rgba(255,255,255,0.08)" />
+                        <path d="M60 240 C75 235 90 245 85 255 C72 262 58 250 60 240 Z" fill="rgba(255,255,255,0.05)" />
+                        <path d="M180 300 C195 295 210 305 205 315 C192 322 178 310 180 300 Z" fill="rgba(255,255,255,0.04)" />
+
+                        <!-- Small bow at waist -->
+                        <path d="M128 150 C122 144 118 148 124 155 C118 150 122 162 128 156 Z" fill="rgba(255,255,255,0.2)" />
+                        <path d="M152 150 C158 144 162 148 156 155 C162 150 158 162 152 156 Z" fill="rgba(255,255,255,0.2)" />
+                        <circle cx="140" cy="153" r="3" fill="rgba(255,255,255,0.3)" />
+                    </svg>
+                </div>
+
+                <!-- Floating chips -->
+                <div class="h-chip hc1">✦ New Season 2025</div>
+                <div class="h-chip hc2">Premium Fabrics</div>
+                <div class="h-chip hc3">Free Shipping ₹999+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marq-wrap">
+        <div class="marq-track">
+            <div class="marq-item"><span class="marq-star">✦</span> Summer Collection</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Silk & Satin</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Bridal Wear</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Party Dresses</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Ethnic Fusion</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Casual Chic</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Free Returns</div>
+            <div class="marq-item"><span class="marq-star">✦</span> COD Available</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Summer Collection</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Silk & Satin</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Bridal Wear</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Party Dresses</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Ethnic Fusion</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Casual Chic</div>
+            <div class="marq-item"><span class="marq-star">✦</span> Free Returns</div>
+            <div class="marq-item"><span class="marq-star">✦</span> COD Available</div>
+        </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <section id="categories">
+        <div class="s-inner">
+            <div data-r="up"><div class="eyebrow">Shop By</div><h2 class="sec-title">Collections</h2></div>
+            <div class="cat-grid" style="margin-top:3rem;">
+
+                <div class="cat-card" data-r="up" data-delay="0">
+                    <div class="cat-bg" style="background:linear-gradient(145deg,#c9a98e,#8a6040);height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;">👗</div>
+                    <div class="cat-label"><span class="cat-name">Party Dresses</span><span class="cat-count">84 styles</span></div>
+                </div>
+
+                <div class="cat-card" data-r="up" data-delay="80">
+                    <div class="cat-bg" style="background:linear-gradient(145deg,#d4c0b0,#7c5c4a);height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;">👘</div>
+                    <div class="cat-label"><span class="cat-name">Ethnic Wear</span><span class="cat-count">120 styles</span></div>
+                </div>
+
+                <div class="cat-card" data-r="up" data-delay="160">
+                    <div class="cat-bg" style="background:linear-gradient(145deg,#b8a090,#5a3828);height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;">💍</div>
+                    <div class="cat-label"><span class="cat-name">Bridal</span><span class="cat-count">56 styles</span></div>
+                </div>
+
+                <div class="cat-card" data-r="up" data-delay="240">
+                    <div class="cat-bg" style="background:linear-gradient(145deg,#e8d8c8,#9a7860);height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;">🌸</div>
+                    <div class="cat-label"><span class="cat-name">Casual & Daily</span><span class="cat-count">210 styles</span></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED COLLECTION -->
+    <section id="collection">
+        <div class="s-inner">
+            <div class="collection-intro">
+                <div data-r="left"><div class="eyebrow">Curated For You</div><h2 class="sec-title">New <em>Arrivals</em></h2></div>
+                <a class="view-all" href="#" data-r="right">View All →</a>
+            </div>
+            <div class="prod-grid">
+
+                <div class="prod-card" data-r="up" data-delay="0">
+                    <div class="prod-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80&fit=crop" alt="Dress" />
+                        <span class="prod-badge new">New</span>
+                        <div class="prod-actions">
+                            <button class="prod-btn" onclick="addToCart()">Add to Bag</button>
+                            <button class="prod-btn prod-btn-wish">♡</button>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+                        <div class="prod-name">Velvet Wrap Midi</div>
+                        <div class="prod-sub">Burgundy · S, M, L, XL</div>
+                        <div class="prod-price">₹4,299 <span class="prod-price-old">₹5,999</span></div>
+                        <div class="prod-stars">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="prod-card" data-r="up" data-delay="80">
+                    <div class="prod-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&q=80&fit=crop" alt="Dress" />
+                        <span class="prod-badge">Trending</span>
+                        <div class="prod-actions">
+                            <button class="prod-btn" onclick="addToCart()">Add to Bag</button>
+                            <button class="prod-btn prod-btn-wish">♡</button>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+                        <div class="prod-name">Floral Sundress</div>
+                        <div class="prod-sub">Dusty Rose · XS–XL</div>
+                        <div class="prod-price">₹2,799</div>
+                        <div class="prod-stars">★★★★☆</div>
+                    </div>
+                </div>
+
+                <div class="prod-card" data-r="up" data-delay="160">
+                    <div class="prod-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fit=crop" alt="Dress" />
+                        <span class="prod-badge sale">Sale</span>
+                        <div class="prod-actions">
+                            <button class="prod-btn" onclick="addToCart()">Add to Bag</button>
+                            <button class="prod-btn prod-btn-wish">♡</button>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+                        <div class="prod-name">Silk Slip Dress</div>
+                        <div class="prod-sub">Ivory · S, M, L</div>
+                        <div class="prod-price">₹5,899 <span class="prod-price-old">₹7,500</span></div>
+                        <div class="prod-stars">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="prod-card" data-r="up" data-delay="0">
+                    <div class="prod-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=80&fit=crop" alt="Dress" />
+                        <span class="prod-badge new">New</span>
+                        <div class="prod-actions">
+                            <button class="prod-btn" onclick="addToCart()">Add to Bag</button>
+                            <button class="prod-btn prod-btn-wish">♡</button>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+                        <div class="prod-name">Linen Shirt Dress</div>
+                        <div class="prod-sub">Sage Green · XS–2XL</div>
+                        <div class="prod-price">₹3,499</div>
+                        <div class="prod-stars">★★★★☆</div>
+                    </div>
+                </div>
+
+                <div class="prod-card" data-r="up" data-delay="80">
+                    <div class="prod-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1550639525-c97d455acf70?w=600&q=80&fit=crop" alt="Dress" />
+                        <div class="prod-actions">
+                            <button class="prod-btn" onclick="addToCart()">Add to Bag</button>
+                            <button class="prod-btn prod-btn-wish">♡</button>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+                        <div class="prod-name">Chiffon Maxi</div>
+                        <div class="prod-sub">Midnight Blue · S–XL</div>
+                        <div class="prod-price">₹6,299</div>
+                        <div class="prod-stars">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="prod-card" data-r="up" data-delay="160">
+                    <div class="prod-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80&fit=crop" alt="Dress" />
+                        <span class="prod-badge sale">Sale</span>
+                        <div class="prod-actions">
+                            <button class="prod-btn" onclick="addToCart()">Add to Bag</button>
+                            <button class="prod-btn prod-btn-wish">♡</button>
+                        </div>
+                    </div>
+                    <div class="prod-info">
+                        <div class="prod-name">Ruffle Party Dress</div>
+                        <div class="prod-sub">Wine Red · S, M, L</div>
+                        <div class="prod-price">₹4,799 <span class="prod-price-old">₹6,200</span></div>
+                        <div class="prod-stars">★★★★☆</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- BANNER -->
+    <div id="banner">
+        <div class="banner-inner">
+            <div class="banner-text" data-r="left">
+                <h2>Where Style<br />Meets <em>Confidence</em></h2>
+                <p style="margin-top:1rem;">Every dress in our collection is thoughtfully designed to make you feel beautiful, powerful, and effortlessly elegant — for every occasion life brings.</p>
+                <a href="#collection" class="btn-wine" style="margin-top:2rem;display:inline-flex;">Explore Now →</a>
+            </div>
+            <div class="banner-right" data-r="right">
+                <div class="banner-stat">
+                    <div class="bs-num">500+</div>
+                    <div class="bs-lbl">Unique dress styles across all occasions and body types</div>
+                </div>
+                <div class="banner-stat">
+                    <div class="bs-num">12K+</div>
+                    <div class="bs-lbl">Happy customers across India with 4.8★ average rating</div>
+                </div>
+                <div class="banner-stat">
+                    <div class="bs-num">48hr</div>
+                    <div class="bs-lbl">Express delivery across Tamil Nadu, Karnataka & Andhra</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW ARRIVALS SCROLL -->
+    <section id="arrivals" style="padding-left:0;padding-right:0;padding-bottom:5rem;">
+        <div class="arrivals-head">
+            <div data-r="left"><div class="eyebrow">Just In</div><h2 class="sec-title">This Week's <em>Picks</em></h2></div>
+            <a class="view-all" href="#" data-r="right">All New →</a>
+        </div>
+        <div class="arrivals-scroll">
+
+            <div class="arr-card">
+                <div class="arr-img"><img src="https://images.unsplash.com/photo-1583744946564-b52d01e6c8f9?w=400&q=80&fit=crop" alt="" /></div>
+                <div class="arr-info"><div class="arr-name">Boho Midi Dress</div><div class="arr-price">₹3,199</div></div>
+            </div>
+            <div class="arr-card">
+                <div class="arr-img"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80&fit=crop" alt="" /></div>
+                <div class="arr-info"><div class="arr-name">Off-Shoulder Gown</div><div class="arr-price">₹7,499</div></div>
+            </div>
+            <div class="arr-card">
+                <div class="arr-img"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80&fit=crop" alt="" /></div>
+                <div class="arr-info"><div class="arr-name">Wrap Floral Dress</div><div class="arr-price">₹2,999</div></div>
+            </div>
+            <div class="arr-card">
+                <div class="arr-img"><img src="https://images.unsplash.com/photo-1566479179817-0a5da8d5b4e7?w=400&q=80&fit=crop" alt="" /></div>
+                <div class="arr-info"><div class="arr-name">Smocked Sundress</div><div class="arr-price">₹2,499</div></div>
+            </div>
+            <div class="arr-card">
+                <div class="arr-img"><img src="https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?w=400&q=80&fit=crop" alt="" /></div>
+                <div class="arr-info"><div class="arr-name">Sequin Mini</div><div class="arr-price">₹5,299</div></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews">
+        <div class="s-inner">
+            <div data-r="up" style="text-align:center;max-width:480px;margin:0 auto 3rem;">
+                <div class="eyebrow" style="justify-content:center;">Real Reviews</div>
+                <h2 class="sec-title">She <em>Loved It</em></h2>
+            </div>
+            <div class="review-grid">
+                <div class="review-card" data-r="up" data-delay="0">
+                    <div class="rv-stars">★★★★★</div>
+                    <p class="rv-quote">"The velvet wrap dress is absolutely stunning! Got so many compliments at the party. The fabric quality is premium and fits perfectly."</p>
+                    <div class="rv-author">
+                        <div class="rv-av">PK</div>
+                        <div><div class="rv-name">Priya Krishnan</div><div class="rv-city">Chennai, TN</div></div>
+                    </div>
+                </div>
+                <div class="review-card" data-r="up" data-delay="100">
+                    <div class="rv-stars">★★★★★</div>
+                    <p class="rv-quote">"Ordered the silk slip dress for my anniversary dinner. It arrived beautifully packaged and looked even better in person. Will definitely order again!"</p>
+                    <div class="rv-author">
+                        <div class="rv-av">AS</div>
+                        <div><div class="rv-name">Anitha Suresh</div><div class="rv-city">Bangalore, KA</div></div>
+                    </div>
+                </div>
+                <div class="review-card" data-r="up" data-delay="200">
+                    <div class="rv-stars">★★★★★</div>
+                    <p class="rv-quote">"Fast delivery, beautiful packaging, and the dress is exactly as shown. The floral sundress is now my favorite! Love Éclat."</p>
+                    <div class="rv-author">
+                        <div class="rv-av">MR</div>
+                        <div><div class="rv-name">Meera Raj</div><div class="rv-city">Coimbatore, TN</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section id="newsletter" style="padding:0;">
+        <div style="padding:6rem 3rem;">
+            <div class="nl-inner">
+                <div class="nl-eyebrow">Stay in Style</div>
+                <h2 class="nl-title">Get <em>20% Off</em><br />Your First Order</h2>
+                <p class="nl-sub">Subscribe to our newsletter for exclusive offers, new arrivals, and style inspiration delivered to your inbox.</p>
+                <div class="nl-form">
+                    <input class="nl-input" type="email" placeholder="Enter your email address..." />
+                    <button class="nl-btn" onclick="subscribeNL(this)">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFO BAR -->
+    <section id="info" style="padding-top:5rem;padding-bottom:4rem;">
+        <div class="s-inner">
+            <div class="info-grid">
+                <div class="info-item" data-r="up" data-delay="0">
+                    <div class="info-icon">🚚</div>
+                    <div class="info-title">Free Shipping</div>
+                    <div class="info-text">Free delivery on orders above ₹999. Express shipping available.</div>
+                </div>
+                <div class="info-item" data-r="up" data-delay="80">
+                    <div class="info-icon">↩️</div>
+                    <div class="info-title">Easy Returns</div>
+                    <div class="info-text">7-day hassle-free return policy. No questions asked.</div>
+                </div>
+                <div class="info-item" data-r="up" data-delay="160">
+                    <div class="info-icon">💳</div>
+                    <div class="info-title">Secure Payment</div>
+                    <div class="info-text">UPI, Cards, Net Banking & COD accepted securely.</div>
+                </div>
+                <div class="info-item" data-r="up" data-delay="240">
+                    <div class="info-icon">💬</div>
+                    <div class="info-title">24/7 Support</div>
+                    <div class="info-text">WhatsApp & chat support always available for you.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="ft-inner">
+            <div class="ft-top">
+                <div class="ft-brand">
+                    <div class="ft-logo">Éclat</div>
+                    <p class="ft-tagline">Celebrating femininity through thoughtfully crafted dresses for every woman, every occasion.</p>
+                </div>
+                <div>
+                    <div class="ft-col-title">Shop</div>
+                    <ul class="ft-links">
+                        <li><a href="#">Party Dresses</a></li>
+                        <li><a href="#">Ethnic Wear</a></li>
+                        <li><a href="#">Bridal</a></li>
+                        <li><a href="#">Casual</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="ft-col-title">Help</div>
+                    <ul class="ft-links">
+                        <li><a href="#">Size Guide</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="ft-col-title">Contact</div>
+                    <ul class="ft-links">
+                        <li><a href="#">hello@@eclat.in</a></li>
+                        <li><a href="#">+91 98765 43210</a></li>
+                        <li><a href="#">Chennai, Tamil Nadu</a></li>
+                        <li><a href="#">WhatsApp Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ft-bottom">
+                <div class="ft-copy">© 2025 Éclat. All rights reserved. Made with ♡ in Chennai.</div>
+                <div class="ft-social">
+                    <a class="soc-btn" href="#">in</a>
+                    <a class="soc-btn" href="#">ig</a>
+                    <a class="soc-btn" href="#">pi</a>
+                    <a class="soc-btn" href="#">yt</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+/* ── PRELOADER ── */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('preloader').classList.add('hide');
+  },2000);
+});
+
+/* ── CURSOR ── */
+const cur=document.getElementById('cur');
+const curO=document.getElementById('cur-outer');
+let mx=0,my=0,ox=0,oy=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){
+  ox+=(mx-ox)*.13;oy+=(my-oy)*.13;
+  curO.style.left=ox+'px';curO.style.top=oy+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.cat-card,.prod-card,.arr-card,.review-card,.soc-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    curO.style.width='56px';curO.style.height='56px';
+    curO.style.borderColor='rgba(124,92,74,.6)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    curO.style.width='44px';curO.style.height='44px';
+    curO.style.borderColor='rgba(124,92,74,.4)';
+  });
+});
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>60);
+},{passive:true});
+
+/* ── MOBILE MENU ── */
+function toggleMob(){
+  document.getElementById('hamBtn').classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+  document.body.style.overflow=document.getElementById('mobMenu').classList.contains('open')?'hidden':'';
+}
+function closeMob(){
+  document.getElementById('hamBtn').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ── CART ── */
+let cartCount=3;
+function toggleCart(){
+  document.getElementById('cartOverlay').classList.toggle('open');
+  document.body.style.overflow=document.getElementById('cartOverlay').classList.contains('open')?'hidden':'';
+}
+function addToCart(){
+  cartCount++;
+  document.querySelector('.cart-badge').textContent=cartCount;
+  /* flash badge */
+  const badge=document.querySelector('.cart-badge');
+  badge.style.transform='scale(1.6)';badge.style.background='var(--gold)';
+  setTimeout(()=>{badge.style.transform='';badge.style.background='';},400);
+}
+
+/* ── REVEAL ── */
+const rIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('on'),parseInt(e.target.dataset.delay||0));
+      rIO.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('[data-r]').forEach(el=>rIO.observe(el));
+
+/* ── COUNTER ── */
+function countUp(el,end,suffix=''){
+  let s=0;
+  const r=ts=>{
+    if(!s)s=ts;
+    const p=Math.min((ts-s)/1600,1);
+    el.textContent=Math.floor(p*end)+suffix;
+    if(p<1)requestAnimationFrame(r);
+  };
+  requestAnimationFrame(r);
+}
+const cIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.hs-num').forEach(el=>{
+        const v=parseInt(el.dataset.count);
+        const s=el.textContent.replace(/[0-9]/g,'');
+        countUp(el,v,s);
+      });
+      cIO.disconnect();
+    }
+  });
+},{threshold:.5});
+const hs=document.querySelector('.h-stats');
+if(hs)cIO.observe(hs);
+
+/* ── NEWSLETTER ── */
+function subscribeNL(btn){
+  const inp=btn.previousElementSibling;
+  if(!inp.value.includes('@@')){inp.style.borderColor='#c0392b';return;}
+  btn.textContent='✓ Subscribed!';btn.style.background='var(--deep)';
+  inp.value='';
+  setTimeout(()=>{btn.textContent='Subscribe';btn.style.background='';},3000);
+}
+    </script>
+</body>
+</html>
+
