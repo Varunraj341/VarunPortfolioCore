@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VarunPortfolioCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d94424d16eba7af1310af94730b0b334194f9761")]
 [assembly: System.Reflection.AssemblyProductAttribute("VarunPortfolioCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VarunPortfolioCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

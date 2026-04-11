@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
