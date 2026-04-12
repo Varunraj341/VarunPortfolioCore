@@ -43,6 +43,13 @@ namespace VarunPortfolioCore.Controllers
 
             return View();
         }
+        
+        public ActionResult SuperMarket()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
 
         [HttpPost]
         public async Task<JsonResult> SendMail([FromBody] FormData model)

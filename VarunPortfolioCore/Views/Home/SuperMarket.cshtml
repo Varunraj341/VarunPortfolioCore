@@ -1,0 +1,712 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+@@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--g1:#0a5c28;--g2:#1a7a3c;--g3:#25a552;--g4:#e8f7ee;--or:#f47c20;--rd:#e53935;--gd:#f5c518;--tx:#1a1a1a;--tx2:#666;--tx3:#aaa;--bd:#e8e8e8;--bg:#f3f5f3;--wh:#fff;--r:12px;--sh:0 2px 10px rgba(0,0,0,0.08)}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(155deg,#063d1a,#0f5c28,#1a7a3c);position:sticky;top:0;z-index:200;box-shadow:0 2px 14px rgba(0,0,0,0.22)}
+.hdr-top{display:flex;align-items:center;gap:8px;padding:9px 12px}
+.logo{display:flex;align-items:center;gap:7px;flex-shrink:0;cursor:pointer}
+.logo-ring{width:40px;height:40px;border-radius:50%;background:#fff;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.2);animation:float3d 3.5s ease-in-out infinite;flex-shrink:0}
+@@keyframes float3d{0%,100%{transform:perspective(60px) rotateY(0) translateY(0)}50%{transform:perspective(60px) rotateY(12deg) translateY(-3px)}}
+.logo-ring img{width:100%;height:100%;object-fit:cover}
+.logo-txt b{display:block;font-size:13px;font-weight:800;color:#fff;line-height:1.1}
+.logo-txt span{font-size:9px;color:#9de3b4;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+.search-wrap{flex:1;min-width:0;position:relative}
+.search-wrap input{width:100%;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.28);border-radius:22px;padding:8px 36px 8px 13px;font-size:13px;color:#fff;font-family:'Poppins',sans-serif;outline:none;transition:all .2s}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.58);font-size:12px}
+.search-wrap input:focus{background:rgba(255,255,255,0.26);border-color:rgba(255,255,255,0.6)}
+.search-icon{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+.hdr-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.loc-btn{display:flex;align-items:center;gap:3px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.24);border-radius:16px;padding:5px 9px;cursor:pointer;color:#fff;font-size:11px;font-weight:600;font-family:'Poppins',sans-serif;max-width:85px}
+.loc-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60px}
+
+/* CART ICON BUTTON */
+.cart-icon-btn{position:relative;background:var(--or);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(244,124,32,.4);flex-shrink:0;transition:transform .15s}
+.cart-icon-btn:active{transform:scale(.92)}
+.cart-icon-btn svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cart-badge{position:absolute;top:-4px;right:-4px;background:#fff;color:var(--or);border-radius:50%;min-width:18px;height:18px;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--or);padding:0 2px}
+
+/* NAV CATS */
+.nav-row{display:flex;overflow-x:auto;background:rgba(0,0,0,.18);scrollbar-width:none;padding:0 4px}
+.nav-row::-webkit-scrollbar{display:none}
+.nc{border:none;background:transparent;color:rgba(255,255,255,.75);padding:8px 13px;font-size:12px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2.5px solid transparent;transition:all .2s;flex-shrink:0}
+.nc.act,.nc:hover{color:#fff;border-bottom-color:var(--gd);background:rgba(255,255,255,.08)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#053d18,#0e6630,#1a8a3f);padding:16px 14px;text-align:center}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(19px,4vw,30px);color:#fff;font-weight:900;margin-bottom:4px}
+.hero p{color:#9de3b4;font-size:12px;margin-bottom:10px}
+.hero-chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.hchip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:3px 10px;color:#fff;font-size:11px;font-weight:600}
+
+/* LAYOUT */
+.layout{display:flex;gap:16px;padding:12px 12px 20px;max-width:1200px;margin:0 auto}
+
+/* SIDEBAR CART — desktop only */
+.sidebar-cart{width:300px;flex-shrink:0;display:none}
+@@media(min-width:700px){.sidebar-cart{display:block;position:sticky;top:72px;align-self:flex-start}}
+.sc-box{background:var(--wh);border-radius:var(--r);border:1.5px solid var(--bd);overflow:hidden;box-shadow:var(--sh)}
+.sc-hdr{background:linear-gradient(135deg,#063d1a,#1a7a3c);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:8px}
+.sc-hdr h3{font-size:14px;font-weight:700;flex:1}
+.sc-body{padding:10px;max-height:420px;overflow-y:auto}
+.sc-empty{text-align:center;padding:30px 10px;color:var(--tx2)}
+.sc-empty div{font-size:38px;margin-bottom:8px}
+.sc-empty p{font-size:12px;font-weight:600}
+.sc-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f0f0f0}
+.sc-item img{width:40px;height:40px;border-radius:8px;object-fit:cover;border:1px solid var(--bd)}
+.sc-item-info{flex:1;min-width:0}
+.sc-item-name{font-size:11px;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-item-wt{font-size:10px;color:var(--tx3)}
+.sc-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.sc-item-price{font-size:12px;font-weight:800;color:var(--g2)}
+.sc-qctrl{display:flex;align-items:center;gap:4px}
+.sc-qbtn{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--g2);background:#fff;color:var(--g2);font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .15s}
+.sc-qbtn:hover{background:var(--g2);color:#fff}
+.sc-qnum{font-size:12px;font-weight:800;color:var(--g2);min-width:16px;text-align:center}
+.sc-foot{padding:12px;border-top:2px solid var(--bd)}
+.sc-total-row{display:flex;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:3px}
+.sc-total-row.big{font-size:15px;font-weight:800;color:var(--tx);margin:8px 0 10px}
+.sc-total-row.big span:last-child{color:var(--g2)}
+.order-now-btn{width:100%;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;transition:opacity .2s;letter-spacing:.3px}
+.order-now-btn:hover{opacity:.9}
+
+/* MAIN CONTENT */
+.main-col{flex:1;min-width:0}
+.stitle{font-size:15px;font-weight:700;color:var(--g1);margin:0 0 10px;display:flex;align-items:center;gap:7px}
+.stitle::after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,var(--g4),transparent)}
+
+/* CAT CHIPS */
+.cat-row{display:flex;gap:10px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none;margin-bottom:4px}
+.cat-row::-webkit-scrollbar{display:none}
+.cc{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;cursor:pointer}
+.cc-img{width:56px;height:56px;border-radius:16px;object-fit:cover;border:2.5px solid transparent;transition:all .2s;box-shadow:var(--sh)}
+.cc.act .cc-img,.cc:hover .cc-img{border-color:var(--g2);box-shadow:0 4px 14px rgba(26,122,60,.22)}
+.cc-lbl{font-size:10px;font-weight:700;color:var(--tx2)}
+.cc.act .cc-lbl{color:var(--g2)}
+
+/* PRODUCT GRID */
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@@media(min-width:500px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+@@media(min-width:900px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+@@media(min-width:1100px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+
+/* PRODUCT CARD */
+.pcard{background:var(--wh);border-radius:var(--r);border:1.5px solid var(--bd);overflow:hidden;position:relative;transition:transform .2s,box-shadow .2s}
+.pcard:hover{box-shadow:0 6px 20px rgba(26,122,60,.13);border-color:#b2dfbd;transform:translateY(-2px)}
+.pbadge{position:absolute;top:7px;left:7px;background:var(--rd);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:5px;z-index:2}
+.pbadge.fr{background:var(--g2)}
+.pimg-wrap{position:relative;width:100%;padding-top:75%;overflow:hidden;background:#f0f8f2}
+.pimg-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.pcard:hover .pimg-wrap img{transform:scale(1.06)}
+.pinfo{padding:9px}
+.pname{font-size:12px;font-weight:700;color:var(--tx);line-height:1.35;margin-bottom:2px;min-height:30px}
+.pwt{font-size:10px;color:var(--tx3);margin-bottom:7px}
+.pfoot{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.pprice-wrap{display:flex;flex-direction:column}
+.pprice{font-size:14px;font-weight:800;color:var(--g2)}
+.pmrp{font-size:10px;color:#bbb;text-decoration:line-through}
+
+/* ADD / QTY CONTROL — Zepto style */
+.add-btn{background:var(--wh);border:2px solid var(--g2);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--g2);cursor:pointer;font-family:'Poppins',sans-serif;transition:all .18s;white-space:nowrap}
+.add-btn:hover{background:var(--g4)}
+.add-btn:active{transform:scale(.95)}
+.qctrl{display:flex;align-items:center;gap:0;border:2px solid var(--g2);border-radius:8px;overflow:hidden;background:var(--wh)}
+.qbtn{width:28px;height:28px;border:none;background:transparent;color:var(--g2);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;transition:background .15s}
+.qbtn:hover{background:var(--g4)}
+.qbtn:active{background:var(--g2);color:#fff}
+.qnum{font-size:13px;font-weight:800;color:var(--g2);min-width:22px;text-align:center}
+
+/* MOBILE BOTTOM BAR */
+.mob-cart-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:180;background:var(--g2);color:#fff;align-items:center;padding:10px 14px;gap:10px;box-shadow:0 -2px 16px rgba(0,0,0,.18);cursor:pointer;transition:all .2s}
+.mob-cart-bar:hover{background:var(--g1)}
+@@media(min-width:700px){.mob-cart-bar{display:none}}
+.mob-cart-icon{position:relative;width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mob-cart-icon svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mob-cart-badge{position:absolute;top:-4px;right:-4px;background:#fff;color:var(--g2);border-radius:50%;min-width:18px;height:18px;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.mob-cart-info{flex:1}
+.mob-cart-info .mc-count{font-size:12px;font-weight:600;opacity:.85}
+.mob-cart-info .mc-total{font-size:15px;font-weight:800}
+.mob-cart-info .mc-items{font-size:11px;opacity:.8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mob-view-btn{background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.4);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:#fff;font-family:'Poppins',sans-serif;white-space:nowrap;flex-shrink:0}
+
+/* MOBILE CART DRAWER */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;opacity:0;pointer-events:none;transition:opacity .25s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-drawer{position:fixed;bottom:0;left:0;right:0;background:var(--wh);border-radius:20px 20px 0 0;z-index:260;transform:translateY(100%);transition:transform .32s cubic-bezier(.34,1.3,.64,1);max-height:85vh;display:flex;flex-direction:column}
+.cart-drawer.open{transform:translateY(0)}
+.cd-handle{width:36px;height:4px;background:var(--bd);border-radius:4px;margin:12px auto 0}
+.cd-hdr{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+.cd-hdr h2{font-size:16px;font-weight:700;color:var(--tx)}
+.cd-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--tx2);line-height:1}
+.cd-body{flex:1;overflow-y:auto;padding:10px 14px}
+.cd-empty{text-align:center;padding:40px 20px;color:var(--tx2)}
+.cd-empty div{font-size:48px;margin-bottom:10px}
+.cd-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.cd-item img{width:48px;height:48px;border-radius:10px;object-fit:cover;border:1px solid var(--bd);flex-shrink:0}
+.cd-item-info{flex:1;min-width:0}
+.cd-item-name{font-size:13px;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-item-wt{font-size:11px;color:var(--tx3);margin-top:1px}
+.cd-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.cd-item-price{font-size:13px;font-weight:800;color:var(--g2)}
+.cd-qctrl{display:flex;align-items:center;gap:0;border:2px solid var(--g2);border-radius:8px;overflow:hidden;background:var(--wh)}
+.cd-qbtn{width:28px;height:26px;border:none;background:transparent;color:var(--g2);font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.cd-qbtn:active{background:var(--g2);color:#fff}
+.cd-qnum{font-size:13px;font-weight:800;color:var(--g2);min-width:24px;text-align:center}
+.cd-foot{padding:14px 16px;border-top:2px solid var(--bd)}
+.cd-total-row{display:flex;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:3px}
+.cd-total-row.big{font-size:16px;font-weight:800;color:var(--tx);margin:8px 0 12px}
+.cd-total-row.big span:last-child{color:var(--g2)}
+.cd-order-btn{width:100%;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;letter-spacing:.3px}
+
+/* ORDER FORM MODAL */
+.form-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s}
+.form-overlay.open{opacity:1;pointer-events:all}
+.form-box{background:var(--wh);border-radius:18px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.4,.64,1)}
+.form-overlay.open .form-box{transform:scale(1)}
+.form-hdr{background:linear-gradient(135deg,#063d1a,#1a7a3c);color:#fff;padding:16px 18px;border-radius:18px 18px 0 0;display:flex;align-items:center;justify-content:space-between}
+.form-hdr h2{font-size:16px;font-weight:700}
+.form-close{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.form-body{padding:18px}
+.form-label{font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:5px;display:block;margin-top:13px}
+.form-label:first-child{margin-top:0}
+.form-input{width:100%;padding:11px 13px;border:2px solid var(--bd);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;color:var(--tx);outline:none;transition:border .2s;background:var(--wh)}
+.form-input:focus{border-color:var(--g2)}
+.form-input::placeholder{color:var(--tx3);font-size:13px}
+/* Order summary in form */
+.form-summary{background:#f8fdf9;border:1.5px solid #c8e6c9;border-radius:10px;padding:12px;margin:14px 0}
+.form-summary h4{font-size:12px;font-weight:700;color:var(--g1);margin-bottom:8px}
+.fs-item{display:flex;justify-content:space-between;font-size:12px;color:var(--tx2);padding:3px 0;border-bottom:1px solid #e8f5e9}
+.fs-item:last-child{border:none}
+.fs-item span:last-child{font-weight:700;color:var(--tx)}
+.fs-total{display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:var(--g2);margin-top:8px;padding-top:8px;border-top:2px solid #c8e6c9}
+.wa-confirm-btn{width:100%;background:#25D366;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;box-shadow:0 4px 14px rgba(37,211,102,.3);transition:opacity .2s}
+.wa-confirm-btn:hover{opacity:.9}
+
+/* WA FAB */
+.wafab{position:fixed;right:14px;z-index:190;background:#25D366;color:#fff;border:none;border-radius:50%;width:50px;height:50px;cursor:pointer;box-shadow:0 4px 18px rgba(37,211,102,.5);display:flex;align-items:center;justify-content:center;animation:wap 2.5s infinite;bottom:80px}
+@@media(min-width:700px){.wafab{bottom:20px}}
+@@keyframes wap{0%,100%{box-shadow:0 4px 16px rgba(37,211,102,.45)}50%{box-shadow:0 4px 28px rgba(37,211,102,.7),0 0 0 7px rgba(37,211,102,.1)}}
+
+/* LOC MODAL */
+.loc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:310;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.loc-overlay.open{opacity:1;pointer-events:all}
+.loc-box{background:var(--wh);border-radius:20px 20px 0 0;padding:18px 16px 28px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.3,.64,1)}
+.loc-overlay.open .loc-box{transform:translateY(0)}
+.loc-handle{width:36px;height:4px;background:var(--bd);border-radius:4px;margin:0 auto 14px;cursor:pointer}
+.loc-box h3{font-size:16px;font-weight:700;color:var(--g1);margin-bottom:3px}
+.dsel{width:100%;padding:10px 12px;border:2px solid var(--bd);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;font-weight:600;color:var(--tx);outline:none;cursor:pointer;margin:10px 0;background:var(--wh)}
+.dsel:focus{border-color:var(--g2)}
+.lloc{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:180px;overflow-y:auto}
+.litem{border:2px solid var(--bd);border-radius:9px;padding:8px 10px;cursor:pointer;transition:all .15s;font-size:12px;font-weight:700;color:var(--tx2)}
+.litem:hover,.litem.sel{border-color:var(--g2);background:var(--g4);color:var(--g2)}
+.lbtn{width:100%;background:var(--g2);color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;margin-top:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%) translateY(14px);background:#111;color:#fff;padding:9px 18px;border-radius:20px;font-weight:600;font-size:12px;z-index:400;transition:all .28s;opacity:0;pointer-events:none;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@@media(min-width:700px){.toast{bottom:24px}}
+
+.foot{background:#063d1a;color:#9de3b4;text-align:center;padding:14px;font-size:11px;margin-top:12px}
+.foot strong{color:#fff;display:block;font-size:13px;margin-bottom:2px}
+</style>
+
+<h2 class="sr-only">Grand Fresh Supermarket - Order Form and WhatsApp</h2>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="logo" onclick="openLoc()">
+      <div class="logo-ring"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=80&h=80&fit=crop&crop=center" alt="logo"/></div>
+      <div class="logo-txt"><b>Grand Fresh</b><span>Supermarket</span></div>
+    </div>
+    <div class="search-wrap">
+      <input type="text" id="si" placeholder="Search vegetables, fruits..."/>
+      <span class="search-icon">🔍</span>
+    </div>
+    <div class="hdr-actions">
+      <button class="loc-btn" onclick="openLoc()">📍<span id="locTxt">Location</span></button>
+      <!-- Desktop cart icon -->
+      <button class="cart-icon-btn" onclick="openCartDrawer()" style="display:none" id="deskCartBtn">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="deskCartBadge">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="nc act" onclick="fcat('all',this)">🏪 All</button>
+    <button class="nc" onclick="fcat('vegetables',this)">🥦 Vegetables</button>
+    <button class="nc" onclick="fcat('fruits',this)">🍎 Fruits</button>
+    <button class="nc" onclick="fcat('dairy',this)">🥛 Dairy</button>
+    <button class="nc" onclick="fcat('grains',this)">🌾 Grains</button>
+    <button class="nc" onclick="fcat('snacks',this)">🍪 Snacks</button>
+    <button class="nc" onclick="fcat('beverages',this)">🧃 Beverages</button>
+    <button class="nc" onclick="fcat('spices',this)">🌶️ Spices</button>
+    <button class="nc" onclick="fcat('personal',this)">🧴 Personal</button>
+    <button class="nc" onclick="fcat('household',this)">🧹 Household</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🌿 Farm Fresh Daily!</h1>
+  <p>Direct from farms • Free delivery above ₹499</p>
+  <div class="hero-chips">
+    <div class="hchip">🚚 Fast Delivery</div>
+    <div class="hchip">✅ Quality Assured</div>
+    <div class="hchip">🎁 Upto 40% OFF</div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <!-- SIDEBAR CART (desktop) -->
+  <div class="sidebar-cart">
+    <div class="sc-box">
+      <div class="sc-hdr">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <h3>My Cart</h3>
+        <span id="scCount" style="background:rgba(255,255,255,.2);border-radius:12px;padding:2px 8px;font-size:12px;font-weight:700">0 items</span>
+      </div>
+      <div class="sc-body" id="scBody">
+        <div class="sc-empty"><div>🛒</div><p>Cart is empty!<br>Add fresh items</p></div>
+      </div>
+      <div class="sc-foot" id="scFoot" style="display:none">
+        <div class="sc-total-row"><span>Subtotal</span><span id="scSub">₹0</span></div>
+        <div class="sc-total-row"><span>Delivery</span><span style="color:var(--g2);font-weight:700">FREE ✅</span></div>
+        <div class="sc-total-row big"><span>Total</span><span id="scTotal">₹0</span></div>
+        <button class="order-now-btn" onclick="openOrderForm()">🛍️ Order Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-col">
+    <div class="stitle" style="margin-top:4px">🛍️ Categories</div>
+    <div class="cat-row" id="catRow">
+      <div class="cc act" onclick="fcat('all',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=120&h=120&fit=crop"/><div class="cc-lbl">All</div></div>
+      <div class="cc" onclick="fcat('vegetables',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&h=120&fit=crop"/><div class="cc-lbl">Vegetables</div></div>
+      <div class="cc" onclick="fcat('fruits',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=120&h=120&fit=crop"/><div class="cc-lbl">Fruits</div></div>
+      <div class="cc" onclick="fcat('dairy',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=120&h=120&fit=crop"/><div class="cc-lbl">Dairy</div></div>
+      <div class="cc" onclick="fcat('grains',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=120&h=120&fit=crop"/><div class="cc-lbl">Grains</div></div>
+      <div class="cc" onclick="fcat('snacks',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=120&h=120&fit=crop"/><div class="cc-lbl">Snacks</div></div>
+      <div class="cc" onclick="fcat('beverages',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=120&h=120&fit=crop"/><div class="cc-lbl">Beverages</div></div>
+      <div class="cc" onclick="fcat('spices',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=120&h=120&fit=crop"/><div class="cc-lbl">Spices</div></div>
+      <div class="cc" onclick="fcat('personal',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=120&h=120&fit=crop"/><div class="cc-lbl">Personal</div></div>
+      <div class="cc" onclick="fcat('household',null,this)"><img class="cc-img" src="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=120&h=120&fit=crop"/><div class="cc-lbl">Household</div></div>
+    </div>
+    <div class="stitle">🛒 Fresh Products</div>
+    <div class="pgrid" id="pgrid"></div>
+    <div id="noRes" style="display:none;text-align:center;padding:40px;color:var(--tx2);font-weight:600">No products found 😕</div>
+  </div>
+</div>
+
+<div class="foot"><strong>🌿 Grand Fresh Supermarket</strong>Tamil Nadu's Most Trusted Fresh Market</div>
+
+<!-- MOBILE BOTTOM CART BAR -->
+<div class="mob-cart-bar" id="mobCartBar" onclick="openCartDrawer()" style="display:none">
+  <div class="mob-cart-icon">
+    <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    <span class="mob-cart-badge" id="mobBadge">0</span>
+  </div>
+  <div class="mob-cart-info">
+    <div class="mc-count" id="mobCount">0 items in cart</div>
+    <div class="mc-total" id="mobTotal">₹0</div>
+    <div class="mc-items" id="mobItems"></div>
+  </div>
+  <div class="mob-view-btn">View Cart ›</div>
+</div>
+
+<!-- MOBILE CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cd-handle"></div>
+  <div class="cd-hdr">
+    <h2>🛒 My Cart</h2>
+    <button class="cd-close" onclick="closeCartDrawer()">✕</button>
+  </div>
+  <div class="cd-body" id="cdBody">
+    <div class="cd-empty"><div>🛒</div><p style="font-weight:600;color:#666">Cart is empty!<br><small>Add some fresh items</small></p></div>
+  </div>
+  <div class="cd-foot" id="cdFoot" style="display:none">
+    <div class="cd-total-row"><span>Subtotal</span><span id="cdSub">₹0</span></div>
+    <div class="cd-total-row"><span>Delivery</span><span style="color:var(--g2);font-weight:700">FREE ✅</span></div>
+    <div class="cd-total-row big"><span>Total</span><span id="cdTotal">₹0</span></div>
+    <button class="cd-order-btn" onclick="closeCartDrawer();openOrderForm()">🛍️ Order Now</button>
+  </div>
+</div>
+
+<!-- ORDER FORM MODAL -->
+<div class="form-overlay" id="formOverlay">
+  <div class="form-box">
+    <div class="form-hdr">
+      <h2>📋 Confirm Order</h2>
+      <button class="form-close" onclick="closeOrderForm()">✕</button>
+    </div>
+    <div class="form-body">
+      <label class="form-label">👤 Full Name *</label>
+      <input class="form-input" id="fName" type="text" placeholder="Enter your full name"/>
+      <label class="form-label">📱 Phone Number *</label>
+      <input class="form-input" id="fPhone" type="tel" placeholder="Enter your mobile number"/>
+      <label class="form-label">🏠 Delivery Address *</label>
+      <input class="form-input" id="fAddr" type="text" placeholder="House no, Street, Area"/>
+      <label class="form-label">📍 City / Location</label>
+      <input class="form-input" id="fCity" type="text" placeholder="City / Town" readonly/>
+
+      <div class="form-summary">
+        <h4>🧾 Order Summary</h4>
+        <div id="formItems"></div>
+        <div class="fs-total"><span>Total Amount</span><span id="formTotal">₹0</span></div>
+      </div>
+
+      <button class="wa-confirm-btn" onclick="sendWA()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send Order via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LOC MODAL -->
+<div class="loc-overlay" id="locMod">
+  <div class="loc-box">
+    <div class="loc-handle" onclick="closeLoc()"></div>
+    <h3>📍 Select Your Location</h3>
+    <p style="font-size:12px;color:var(--tx2)">Find Grand Fresh near you in Tamil Nadu</p>
+    <select class="dsel" id="dsel" onchange="loadLocs()">
+      <option value="">-- Select District --</option>
+      <option>Chennai</option><option>Coimbatore</option><option>Madurai</option><option>Salem</option><option>Tiruchirappalli</option><option>Tirunelveli</option><option>Vellore</option><option>Erode</option><option>Thoothukudi</option><option>Thanjavur</option><option>Dindigul</option><option>Kanchipuram</option><option>Namakkal</option><option>Tiruppur</option><option>Cuddalore</option><option>Villupuram</option><option>Ramanathapuram</option><option>Sivaganga</option><option>Virudhunagar</option><option>Nilgiris</option>
+    </select>
+    <div class="lloc" id="locList"></div>
+    <button class="lbtn" onclick="setLoc()">✅ Confirm Location</button>
+  </div>
+</div>
+
+<!-- WA FAB -->
+<button class="wafab" onclick="chatWA()">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</button>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WA='919585726827';
+const prods=[
+  {id:1,n:'Tomato',w:'1 kg',p:35,m:50,img:'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=300&h=225&fit=crop',c:'vegetables',b:'Fresh',bc:'fr'},
+  {id:2,n:'Spinach (Keerai)',w:'500 g',p:25,m:35,img:'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=225&fit=crop',c:'vegetables',b:'Organic',bc:'fr'},
+  {id:3,n:'Carrot',w:'1 kg',p:45,m:60,img:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&h=225&fit=crop',c:'vegetables',b:'Fresh',bc:'fr'},
+  {id:4,n:'Potato',w:'2 kg',p:55,m:70,img:'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&h=225&fit=crop',c:'vegetables',b:null},
+  {id:5,n:'Onion',w:'1 kg',p:30,m:42,img:'https://images.unsplash.com/photo-1508747703725-719777637510?w=300&h=225&fit=crop',c:'vegetables',b:null},
+  {id:6,n:'Lady Finger',w:'500 g',p:28,m:40,img:'https://images.unsplash.com/photo-1628891890467-b79f2c8ba9dc?w=300&h=225&fit=crop',c:'vegetables',b:'Fresh',bc:'fr'},
+  {id:7,n:'Brinjal',w:'500 g',p:22,m:32,img:'https://images.unsplash.com/photo-1659261200833-ec8761558af7?w=300&h=225&fit=crop',c:'vegetables',b:'Local',bc:'fr'},
+  {id:8,n:'Capsicum',w:'500 g',p:38,m:55,img:'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&h=225&fit=crop',c:'vegetables',b:null},
+  {id:9,n:'Beetroot',w:'500 g',p:30,m:40,img:'https://images.unsplash.com/photo-1593105544559-ecb03bf76f82?w=300&h=225&fit=crop',c:'vegetables',b:'Fresh',bc:'fr'},
+  {id:10,n:'Cauliflower',w:'1 piece',p:40,m:55,img:'https://images.unsplash.com/photo-1568584711271-6c929fb49b60?w=300&h=225&fit=crop',c:'vegetables',b:null},
+  {id:11,n:'Cucumber',w:'500 g',p:20,m:30,img:'https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=300&h=225&fit=crop',c:'vegetables',b:'Fresh',bc:'fr'},
+  {id:12,n:'Drumstick',w:'250 g',p:18,m:28,img:'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=300&h=225&fit=crop',c:'vegetables',b:'Local',bc:'fr'},
+  {id:13,n:'Apple (Shimla)',w:'1 kg',p:140,m:180,img:'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=225&fit=crop',c:'fruits',b:'Premium',bc:'fr'},
+  {id:14,n:'Banana',w:'12 pcs',p:55,m:70,img:'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=225&fit=crop',c:'fruits',b:'Local',bc:'fr'},
+  {id:15,n:'Mango (Alphonso)',w:'1 kg',p:180,m:230,img:'https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&h=225&fit=crop',c:'fruits',b:'Season',bc:'fr'},
+  {id:16,n:'Black Grapes',w:'500 g',p:65,m:90,img:'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&h=225&fit=crop',c:'fruits',b:'28% OFF'},
+  {id:17,n:'Watermelon',w:'~3 kg',p:80,m:110,img:'https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?w=300&h=225&fit=crop',c:'fruits',b:'Fresh',bc:'fr'},
+  {id:18,n:'Papaya',w:'1 piece',p:60,m:80,img:'https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=300&h=225&fit=crop',c:'fruits',b:'Local',bc:'fr'},
+  {id:19,n:'Pomegranate',w:'500 g',p:90,m:120,img:'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=300&h=225&fit=crop',c:'fruits',b:null},
+  {id:20,n:'Orange (Nagpur)',w:'1 kg',p:75,m:100,img:'https://images.unsplash.com/photo-1547514701-42782101795e?w=300&h=225&fit=crop',c:'fruits',b:null},
+  {id:21,n:'Fresh Milk',w:'500 ml',p:26,m:28,img:'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&h=225&fit=crop',c:'dairy',b:'Daily Fresh',bc:'fr'},
+  {id:22,n:'Curd',w:'400 g',p:40,m:48,img:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&h=225&fit=crop',c:'dairy',b:'Fresh',bc:'fr'},
+  {id:23,n:'Paneer',w:'200 g',p:80,m:95,img:'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=300&h=225&fit=crop',c:'dairy',b:'Premium',bc:'fr'},
+  {id:24,n:'Pure Cow Ghee',w:'500 g',p:280,m:320,img:'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=300&h=225&fit=crop',c:'dairy',b:'A2 Pure',bc:'fr'},
+  {id:25,n:'Butter',w:'100 g',p:55,m:65,img:'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=300&h=225&fit=crop',c:'dairy',b:null},
+  {id:26,n:'Ponni Rice',w:'5 kg',p:260,m:310,img:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=225&fit=crop',c:'grains',b:'Best Quality',bc:'fr'},
+  {id:27,n:'Toor Dal',w:'1 kg',p:110,m:140,img:'https://images.unsplash.com/photo-1585996676474-7d0cad38ce92?w=300&h=225&fit=crop',c:'grains',b:null},
+  {id:28,n:'Wheat Flour',w:'5 kg',p:185,m:230,img:'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=300&h=225&fit=crop',c:'grains',b:'20% OFF'},
+  {id:29,n:'Chana Dal',w:'1 kg',p:95,m:120,img:'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=300&h=225&fit=crop',c:'grains',b:null},
+  {id:30,n:'Moong Dal',w:'500 g',p:65,m:85,img:'https://images.unsplash.com/photo-1615485291234-9d694218aeb3?w=300&h=225&fit=crop',c:'grains',b:null},
+  {id:31,n:'Haldiram Namkeen',w:'200 g',p:45,m:50,img:'https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=300&h=225&fit=crop',c:'snacks',b:null},
+  {id:32,n:'Cream Biscuits',w:'200 g',p:35,m:40,img:'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&h=225&fit=crop',c:'snacks',b:null},
+  {id:33,n:'Murukku',w:'300 g',p:65,m:80,img:'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=300&h=225&fit=crop',c:'snacks',b:'Homemade',bc:'fr'},
+  {id:34,n:'Filter Coffee',w:'200 g',p:120,m:145,img:'https://images.unsplash.com/photo-1509785307050-d4066910ec1e?w=300&h=225&fit=crop',c:'beverages',b:'Special',bc:'fr'},
+  {id:35,n:'Mango Juice',w:'1 L',p:85,m:100,img:'https://images.unsplash.com/photo-1546173159-315724a31696?w=300&h=225&fit=crop',c:'beverages',b:null},
+  {id:36,n:'Tata Tea Premium',w:'250 g',p:95,m:115,img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&h=225&fit=crop',c:'beverages',b:null},
+  {id:37,n:'Red Chilli Powder',w:'200 g',p:55,m:70,img:'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&h=225&fit=crop',c:'spices',b:'Hot'},
+  {id:38,n:'Turmeric Powder',w:'200 g',p:38,m:50,img:'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=300&h=225&fit=crop',c:'spices',b:'Pure',bc:'fr'},
+  {id:39,n:'Garam Masala',w:'100 g',p:60,m:78,img:'https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=300&h=225&fit=crop',c:'spices',b:null},
+  {id:40,n:'Mustard Seeds',w:'200 g',p:28,m:38,img:'https://images.unsplash.com/photo-1622689788821-efe8ff2f7fd9?w=300&h=225&fit=crop',c:'spices',b:'Pure',bc:'fr'},
+  {id:41,n:'Dove Shampoo',w:'340 ml',p:175,m:210,img:'https://images.unsplash.com/photo-1585232351809-8cf9b5bb3b73?w=300&h=225&fit=crop',c:'personal',b:'16% OFF'},
+  {id:42,n:'Pears Soap',w:'2×75g',p:55,m:65,img:'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300&h=225&fit=crop',c:'personal',b:null},
+  {id:43,n:'Ariel Detergent',w:'1 kg',p:185,m:220,img:'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=300&h=225&fit=crop',c:'household',b:'16% OFF'},
+  {id:44,n:'Vim Dishwash',w:'200 g',p:20,m:25,img:'https://images.unsplash.com/photo-1585670891407-47b5b30d3219?w=300&h=225&fit=crop',c:'household',b:null},
+];
+
+let cart={}, activeCat='all', selLoc='Chennai', selDist='Chennai';
+document.getElementById('locTxt').textContent='Chennai';
+document.getElementById('fCity').value='Chennai';
+
+// Responsive: show correct UI
+function checkBreakpoint(){
+  const isDesk=window.innerWidth>=700;
+  document.getElementById('mobCartBar').style.display=Object.keys(cart).length>0&&!isDesk?'flex':'none';
+  document.getElementById('deskCartBtn').style.display=isDesk?'flex':'none';
+}
+window.addEventListener('resize',checkBreakpoint);
+
+function render(list){
+  const g=document.getElementById('pgrid');
+  const nr=document.getElementById('noRes');
+  if(!list.length){g.innerHTML='';nr.style.display='block';return;}
+  nr.style.display='none';
+  g.innerHTML=list.map(p=>{
+    const q=cart[p.id]?.q||0;
+    const disc=p.m>p.p?Math.round((1-p.p/p.m)*100):0;
+    const bdg=p.b||(disc>0?disc+'% OFF':null);
+    return `<div class="pcard">
+      ${bdg?`<div class="pbadge ${p.bc||''}">${bdg}</div>`:''}
+      <div class="pimg-wrap"><img src="${p.img}" alt="${p.n}" loading="lazy"/></div>
+      <div class="pinfo">
+        <div class="pname">${p.n}</div>
+        <div class="pwt">${p.w}</div>
+        <div class="pfoot">
+          <div class="pprice-wrap"><div class="pprice">₹${p.p}</div><div class="pmrp">₹${p.m}</div></div>
+          ${q===0
+            ?`<button class="add-btn" onclick="addC(${p.id})">+ Add</button>`
+            :`<div class="qctrl">
+               <button class="qbtn" onclick="chgQ(${p.id},-1)">−</button>
+               <span class="qnum">${q}</span>
+               <button class="qbtn" onclick="chgQ(${p.id},1)">+</button>
+             </div>`}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getList(){
+  const q=document.getElementById('si').value.toLowerCase().trim();
+  return prods.filter(p=>(activeCat==='all'||p.c===activeCat)&&(!q||p.n.toLowerCase().includes(q)));
+}
+document.getElementById('si').addEventListener('input',()=>render(getList()));
+
+function fcat(cat,nb,cb){
+  activeCat=cat;
+  document.querySelectorAll('.nc').forEach(x=>x.classList.remove('act'));
+  document.querySelectorAll('.cc').forEach(x=>x.classList.remove('act'));
+  if(nb)nb.classList.add('act');
+  if(cb)cb.classList.add('act');
+  render(getList());
+}
+
+function addC(id){
+  const p=prods.find(x=>x.id===id);
+  if(!cart[id])cart[id]={...p,q:0};
+  cart[id].q++;
+  updAll();
+  toast('✅ '+p.n+' added!');
+  render(getList());
+}
+function chgQ(id,d){
+  if(!cart[id])return;
+  cart[id].q+=d;
+  if(cart[id].q<=0)delete cart[id];
+  updAll();
+  render(getList());
+}
+
+function updAll(){
+  const items=Object.values(cart);
+  const total=items.reduce((s,i)=>s+i.p*i.q,0);
+  const count=items.reduce((s,i)=>s+i.q,0);
+  const isDesk=window.innerWidth>=700;
+
+  // Desktop sidebar
+  document.getElementById('scCount').textContent=count+' items';
+  document.getElementById('deskCartBadge').textContent=count;
+  const sb=document.getElementById('scBody'),sf=document.getElementById('scFoot');
+  if(!items.length){
+    sb.innerHTML='<div class="sc-empty"><div>🛒</div><p>Cart is empty!<br>Add fresh items</p></div>';
+    sf.style.display='none';
+  } else {
+    sf.style.display='block';
+    sb.innerHTML=items.map(i=>`
+      <div class="sc-item">
+        <img src="${i.img}" alt="${i.n}" onerror="this.style.display='none'"/>
+        <div class="sc-item-info"><div class="sc-item-name">${i.n}</div><div class="sc-item-wt">${i.w}</div></div>
+        <div class="sc-item-right">
+          <div class="sc-item-price">₹${i.p*i.q}</div>
+          <div class="sc-qctrl">
+            <button class="sc-qbtn" onclick="chgQ(${i.id},-1)">−</button>
+            <span class="sc-qnum">${i.q}</span>
+            <button class="sc-qbtn" onclick="chgQ(${i.id},1)">+</button>
+          </div>
+        </div>
+      </div>`).join('');
+    document.getElementById('scSub').textContent='₹'+total;
+    document.getElementById('scTotal').textContent='₹'+total;
+  }
+
+  // Mobile bottom bar
+  const mbb=document.getElementById('mobCartBar');
+  if(!isDesk&&items.length>0){
+    mbb.style.display='flex';
+    document.getElementById('mobBadge').textContent=count;
+    document.getElementById('mobCount').textContent=count+' item'+(count>1?'s':'')+' in cart';
+    document.getElementById('mobTotal').textContent='Total: ₹'+total;
+    document.getElementById('mobItems').textContent=items.map(i=>i.n+' ×'+i.q).join(', ');
+  } else {
+    mbb.style.display='none';
+  }
+
+  // Mobile cart drawer
+  const cb=document.getElementById('cdBody'),cf=document.getElementById('cdFoot');
+  if(!items.length){
+    cb.innerHTML='<div class="cd-empty"><div>🛒</div><p style="font-weight:600;color:#666">Cart is empty!<br><small>Add some fresh items</small></p></div>';
+    cf.style.display='none';
+  } else {
+    cf.style.display='block';
+    cb.innerHTML=items.map(i=>`
+      <div class="cd-item">
+        <img src="${i.img}" alt="${i.n}"/>
+        <div class="cd-item-info"><div class="cd-item-name">${i.n}</div><div class="cd-item-wt">${i.w} × ${i.q} pack</div></div>
+        <div class="cd-item-right">
+          <div class="cd-item-price">₹${i.p*i.q}</div>
+          <div class="cd-qctrl">
+            <button class="cd-qbtn" onclick="chgQ(${i.id},-1)">−</button>
+            <span class="cd-qnum">${i.q}</span>
+            <button class="cd-qbtn" onclick="chgQ(${i.id},1)">+</button>
+          </div>
+        </div>
+      </div>`).join('');
+    document.getElementById('cdSub').textContent='₹'+total;
+    document.getElementById('cdTotal').textContent='₹'+total;
+  }
+}
+
+function openCartDrawer(){
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+}
+function closeCartDrawer(){
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+}
+
+function openOrderForm(){
+  const items=Object.values(cart);
+  if(!items.length){toast('❌ Cart is empty! Add items first.');return;}
+  const total=items.reduce((s,i)=>s+i.p*i.q,0);
+  document.getElementById('fCity').value=selLoc||'Chennai';
+  // Fill summary
+  document.getElementById('formItems').innerHTML=items.map(i=>`
+    <div class="fs-item">
+      <span>${i.n} (${i.w}) × ${i.q}</span>
+      <span>₹${i.p*i.q}</span>
+    </div>`).join('');
+  document.getElementById('formTotal').textContent='₹'+total;
+  document.getElementById('formOverlay').classList.add('open');
+}
+function closeOrderForm(){document.getElementById('formOverlay').classList.remove('open');}
+
+function sendWA(){
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  const addr=document.getElementById('fAddr').value.trim();
+  const city=document.getElementById('fCity').value.trim();
+  if(!name){alert('Please enter your name!');document.getElementById('fName').focus();return;}
+  if(!phone||phone.length<10){alert('Please enter a valid phone number!');document.getElementById('fPhone').focus();return;}
+  if(!addr){alert('Please enter your delivery address!');document.getElementById('fAddr').focus();return;}
+
+  const items=Object.values(cart);
+  const subtotal=items.reduce((s,i)=>s+i.p*i.q,0);
+  const now=new Date();
+  const date=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  const time=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+  let msg='';
+  msg+='🌿 *GRAND FRESH SUPERMARKET*\n';
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  msg+='📋 *ORDER DETAILS*\n';
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  msg+=`🗓 Date : ${date}   ⏰ ${time}\n`;
+  msg+=`👤 Name : ${name}\n`;
+  msg+=`📱 Phone : ${phone}\n`;
+  msg+=`🏠 Address : ${addr}, ${city}\n`;
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  msg+='🛒 *ITEMS ORDERED*\n\n';
+  items.forEach((i,idx)=>{
+    msg+=`${idx+1}. *${i.n}*\n`;
+    msg+=`   📦 Qty    : ${i.q} pack × ${i.w}\n`;
+    msg+=`   💵 Rate   : ₹${i.p} per pack\n`;
+    msg+=`   💰 Amount : *₹${i.p*i.q}*\n\n`;
+  });
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  msg+=`🧾 Subtotal  :  ₹${subtotal}\n`;
+  msg+=`🚚 Delivery  :  FREE ✅\n`;
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  msg+=`💳 *TOTAL AMOUNT :  ₹${subtotal}*\n`;
+  msg+='━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  msg+='✅ Please confirm my order. 🙏\n';
+  msg+='🌿 *Grand Fresh Supermarket*';
+
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');
+  closeOrderForm();
+  toast('✅ Order sent to WhatsApp!');
+}
+
+function chatWA(){
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent('Hi Grand Fresh! 👋 I want to place an order.'),'_blank');
+}
+
+function openLoc(){document.getElementById('locMod').classList.add('open');}
+function closeLoc(){document.getElementById('locMod').classList.remove('open');}
+document.getElementById('locMod').addEventListener('click',function(e){if(e.target===this)closeLoc();});
+
+const locData={
+  'Chennai':['Anna Nagar','T Nagar','Velachery','Adyar','Porur','Tambaram','Ambattur','Chromepet','Sholinganallur','Perambur','Mylapore','Besant Nagar'],
+  'Coimbatore':['RS Puram','Gandhipuram','Singanallur','Peelamedu','Saibaba Colony','Vadavalli'],
+  'Madurai':['Anna Nagar','Tallakulam','Goripalayam','Krishnanagar','Kochadai'],
+  'Salem':['Shevapet','Suramangalam','Fairlands','Gugai','Swarnapuri'],
+  'Tiruchirappalli':['Srirangam','Thillai Nagar','KK Nagar','Puthur','Ariyamangalam'],
+  'Tirunelveli':['Palayamkottai','Melapalayam','Nanguneri','Pettai'],
+  'Vellore':['Katpadi','Gandhi Nagar','Sathuvachari','Kosapet'],
+  'Erode':['Perundurai','Bhavani','Gobichettipalayam','Kavindapadi'],
+  'Thoothukudi':['VOC Port Area','Arumuganeri','Kovilpatti'],
+  'Thanjavur':['Medical College Road','Anna Nagar','Nanjikottai'],
+  'Dindigul':['Palani Road','Begampur','Ayyampalayam'],
+  'Kanchipuram':['Egmore Road','Pillaiyarpalayam','Silk Town'],
+  'Namakkal':['Paramathi','Rasipuram','Tiruchengode'],
+  'Tiruppur':['Avinashi Road','Palladam','Udumalpet'],
+  'Cuddalore':['Parangipettai','Chidambaram','Panruti'],
+  'Villupuram':['Gingee','Sankarapuram','Ulundurpet'],
+  'Ramanathapuram':['Paramakudi','Rameswaram','Kadaladi'],
+  'Sivaganga':['Manamadurai','Karaikudi','Devakottai'],
+  'Virudhunagar':['Sivakasi','Aruppukkottai','Satur'],
+  'Nilgiris':['Ooty','Coonoor','Kotagiri','Gudalur'],
+};
+function loadLocs(){
+  const d=document.getElementById('dsel').value;selDist=d;selLoc='';
+  document.getElementById('locList').innerHTML=(locData[d]||[]).map(l=>`<div class="litem" onclick="pickLoc(this,'${l}')">${l}</div>`).join('');
+}
+function pickLoc(el,l){document.querySelectorAll('.litem').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');selLoc=l;}
+function setLoc(){
+  if(!selDist){alert('Please select a district!');return;}
+  const loc=selLoc||selDist;
+  selLoc=loc;
+  document.getElementById('locTxt').textContent=loc.length>9?loc.substring(0,9)+'..':loc;
+  document.getElementById('fCity').value=loc;
+  closeLoc();
+  toast('📍 Location: '+loc);
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+render(prods);
+checkBreakpoint();
+</script>
