@@ -18,8 +18,8 @@
 
     <style>
             /* ============================================================
-                           DESIGN TOKENS
-                           ============================================================ */
+                                       DESIGN TOKENS
+                                       ============================================================ */
             :root {
                 --ivory: #FBF7EF;
                 --ivory-deep: #F5EEDF;
@@ -112,8 +112,8 @@
             }
 
             /* ============================================================
-                           TEXTURE / BACKDROP
-                           ============================================================ */
+                                       TEXTURE / BACKDROP
+                                       ============================================================ */
             .grain {
                 position: fixed;
                 inset: 0;
@@ -125,8 +125,8 @@
             }
 
             /* ============================================================
-                           TYPOGRAPHY
-                           ============================================================ */
+                                       TYPOGRAPHY
+                                       ============================================================ */
             .eyebrow {
                 font-family: var(--font-sc);
                 font-size: 0.78rem;
@@ -174,8 +174,8 @@
             }
 
             /* ============================================================
-                           REVEAL ON SCROLL
-                           ============================================================ */
+                                       REVEAL ON SCROLL
+                                       ============================================================ */
             .reveal {
                 opacity: 0;
                 transform: translateY(28px);
@@ -200,8 +200,8 @@
             }
 
             /* ============================================================
-                           NAVIGATION
-                           ============================================================ */
+                                       NAVIGATION
+                                       ============================================================ */
             .nav {
                 position: fixed;
                 top: 0;
@@ -424,8 +424,8 @@
                 }
 
             /* ============================================================
-                           HERO
-                           ============================================================ */
+                                       HERO
+                                       ============================================================ */
             .hero {
                 position: relative;
                 min-height: 100vh;
@@ -501,8 +501,8 @@
             }
 
             /* ============================================================
-                           LANDING / INTRO LOADER
-                           ============================================================ */
+                                       LANDING / INTRO LOADER
+                                       ============================================================ */
             #loader {
                 position: fixed;
                 inset: 0;
@@ -746,8 +746,8 @@
             }
 
             /* ============================================================
-                           SECTION SHELL
-                           ============================================================ */
+                                       SECTION SHELL
+                                       ============================================================ */
             section {
                 position: relative;
                 padding: var(--space-xl) 0;
@@ -774,8 +774,8 @@
             }
 
             /* ============================================================
-                           COUNTDOWN
-                           ============================================================ */
+                                       COUNTDOWN
+                                       ============================================================ */
             .countdown-section {
                 background: linear-gradient(180deg, var(--ivory) 0%, var(--sage-pale) 100%);
                 text-align: center;
@@ -825,8 +825,8 @@
             }
 
             /* ============================================================
-                           OUR STORY — TIMELINE
-                           ============================================================ */
+                                       OUR STORY — TIMELINE
+                                       ============================================================ */
             .story-timeline {
                 position: relative;
                 max-width: 960px;
@@ -958,8 +958,8 @@
             }
 
             /* ============================================================
-                           VENUE CARDS (Ceremony / Reception)
-                           ============================================================ */
+                                       VENUE CARDS (Ceremony / Reception)
+                                       ============================================================ */
             .venue-section {
             }
 
@@ -1100,8 +1100,8 @@
                     }
 
             /* ============================================================
-                           GALLERY
-                           ============================================================ */
+                                       GALLERY
+                                       ============================================================ */
             .gallery-masonry {
                 columns: 3 260px;
                 column-gap: 1.2rem;
@@ -1196,8 +1196,8 @@
                 }
 
             /* ============================================================
-                           LOVE QUOTE
-                           ============================================================ */
+                                       LOVE QUOTE
+                                       ============================================================ */
             .quote-section {
                 text-align: center;
                 background: linear-gradient(180deg, var(--sage-pale), var(--ivory));
@@ -1212,8 +1212,8 @@
             }
 
             /* ============================================================
-                           EVENT TIMELINE (vertical, simple)
-                           ============================================================ */
+                                       EVENT TIMELINE (vertical, simple)
+                                       ============================================================ */
             .events-list {
                 max-width: 640px;
                 margin: 0 auto;
@@ -1274,8 +1274,8 @@
             }
 
             /* ============================================================
-                           FAMILY SECTION
-                           ============================================================ */
+                                       FAMILY SECTION
+                                       ============================================================ */
             .family-grid {
                 display: grid;
                 grid-template-columns: 1fr auto 1fr;
@@ -1323,8 +1323,8 @@
             }
 
             /* ============================================================
-                           FINAL SECTION
-                           ============================================================ */
+                                       FINAL SECTION
+                                       ============================================================ */
             .final-section {
                 text-align: center;
                 padding: var(--space-xl) 0 calc(var(--space-xl) + 2rem);
@@ -1381,8 +1381,8 @@
             }
 
             /* ============================================================
-                           MUSIC TOGGLE
-                           ============================================================ */
+                                       MUSIC TOGGLE
+                                       ============================================================ */
             .music-btn {
                 position: fixed;
                 right: clamp(1rem,3vw,2rem);
@@ -1454,8 +1454,8 @@
             }
 
             /* ============================================================
-                           FLOATING AMBIENT PETALS
-                           ============================================================ */
+                                       FLOATING AMBIENT PETALS
+                                       ============================================================ */
             .petal-field {
                 position: fixed;
                 inset: 0;
@@ -1482,8 +1482,8 @@
             }
 
             /* ============================================================
-                           UTILITIES
-                           ============================================================ */
+                                       UTILITIES
+                                       ============================================================ */
             .center {
                 text-align: center;
             }
@@ -1727,7 +1727,39 @@
             </div>
         </div>
     </section>
+    <section class="countdown-section" id="countdown">
+        <div class="wrap">
 
+            <div class="section-head reveal" style="margin-bottom:var(--space-md);">
+                <p class="eyebrow">Counting Down</p>
+                <h2 class="section-title">Until Our Reception</h2>
+            </div>
+
+            <div class="countdown-grid reveal">
+
+                <div class="countdown-card">
+                    <div class="countdown-num" id="countdownDays">00</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+
+                <div class="countdown-card">
+                    <div class="countdown-num" id="countdownHours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+
+                <div class="countdown-card">
+                    <div class="countdown-num" id="countdownMinutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+
+                <div class="countdown-card">
+                    <div class="countdown-num" id="countdownSeconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
     <!-- ============================================================
      4. WEDDING CEREMONY  &  5. RECEPTION
 ============================================================ -->
@@ -2042,7 +2074,98 @@
                     p.style.animationDelay = (Math.random() * -20) + 's';
                     field.appendChild(p);
                 }
+                /* ---------- COUNTDOWN ---------- */
+                // Target: 06 September 2026, 11:00 AM IST
 
+                var countdownTarget = new Date(
+                    '2026-09-06T11:00:00+05:30'
+                ).getTime();
+
+                var daysElement = document.getElementById('countdownDays');
+                var hoursElement = document.getElementById('countdownHours');
+                var minutesElement = document.getElementById('countdownMinutes');
+                var secondsElement = document.getElementById('countdownSeconds');
+
+                function countdownPad(number) {
+                    return String(number).padStart(2, '0');
+                }
+
+                function updateCountdown() {
+
+                    var now = Date.now();
+                    var difference = countdownTarget - now;
+
+                    if (difference <= 0) {
+                        daysElement.textContent = '00';
+                        hoursElement.textContent = '00';
+                        minutesElement.textContent = '00';
+                        secondsElement.textContent = '00';
+                        return;
+                    }
+
+                    var days = Math.floor(difference / 86400000);
+
+                    var hours = Math.floor(
+                        (difference % 86400000) / 3600000
+                    );
+
+                    var minutes = Math.floor(
+                        (difference % 3600000) / 60000
+                    );
+
+                    var seconds = Math.floor(
+                        (difference % 60000) / 1000
+                    );
+
+                    daysElement.textContent = countdownPad(days);
+                    hoursElement.textContent = countdownPad(hours);
+                    minutesElement.textContent = countdownPad(minutes);
+                    secondsElement.textContent = countdownPad(seconds);
+                }
+
+                updateCountdown();
+
+                setInterval(updateCountdown, 1000);
+
+
+                /* ---------- AMBIENT FLOATING PETALS ---------- */
+
+                var field = document.getElementById('petalField');
+
+                if (field) {
+
+                    var count = window.innerWidth < 700 ? 8 : 14;
+
+                    for (var i = 0; i < count; i++) {
+
+                        var p = document.createElement('div');
+
+                        p.className = 'petal';
+
+                        p.style.left =
+                            (Math.random() * 100) + 'vw';
+
+                        p.style.opacity =
+                            (0.25 + Math.random() * 0.35).toFixed(2);
+
+                        var size =
+                            6 + Math.random() * 8;
+
+                        p.style.width =
+                            size + 'px';
+
+                        p.style.height =
+                            size + 'px';
+
+                        p.style.animationDuration =
+                            (14 + Math.random() * 14) + 's';
+
+                        p.style.animationDelay =
+                            (Math.random() * -20) + 's';
+
+                        field.appendChild(p);
+                    }
+                }
                 /* ---------- MUSIC TOGGLE (manual only, no autoplay) ---------- */
                 var musicBtn = document.getElementById('musicBtn');
                 var audio = document.getElementById('bgMusic');
