@@ -1091,9 +1091,21 @@
         <div class="bars" id="musicBars" style="display:none;"><i></i><i></i><i></i></div>
     </button>
     <!-- Replace src below with your own audio file to enable playback -->
-    <audio id="bgMusic" loop preload="none" src="music.mp3"></audio>
+    <audio id="bgMusic" loop autoplay><source src="~/Photos/mental-manadhil1.mp3" type="audio/mpeg"></audio>
 
     <script>
+        window.addEventListener('load', function () {
+    audio.play().then(function () {
+        playing = true;
+        musicBtn.classList.add('playing');
+        musicBtn.setAttribute('aria-pressed', 'true');
+        musicBtn.setAttribute('aria-label', 'Pause background music');
+        iconOff.style.display = 'none';
+        bars.style.display = 'flex';
+    }).catch(function (error) {
+        console.log('Autoplay blocked:', error);
+    });
+});
             (function() {
                 "use strict";
 
