@@ -12,6 +12,10 @@ namespace VarunPortfolioCore.Controllers
         {
             return View();
         }
+        public IActionResult VJ_Invitation()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
